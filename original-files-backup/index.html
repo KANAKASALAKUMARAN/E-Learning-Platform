@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub | Expert-Led Online Courses</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <span class="text-primary">Learn</span>Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/contact.html">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="pages/login.html" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="pages/signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section py-5 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Unleash Your Potential with Expert-Led Courses</h1>
+                    <p class="lead mb-4">Accelerate your career with high-quality, interactive courses designed for working professionals. Learn at your own pace, anytime, anywhere.</p>
+                    <div class="d-flex gap-3 mb-4">
+                        <a href="pages/courses.html" class="btn btn-primary btn-lg">Explore Courses</a>
+                        <a href="pages/signup.html" class="btn btn-outline-primary btn-lg">Join for Free</a>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span class="fs-3 text-primary fw-bold">10K+</span>
+                            <p class="mb-0">Students</p>
+                        </div>
+                        <div class="me-3">
+                            <span class="fs-3 text-primary fw-bold">200+</span>
+                            <p class="mb-0">Courses</p>
+                        </div>
+                        <div>
+                            <span class="fs-3 text-primary fw-bold">50+</span>
+                            <p class="mb-0">Experts</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="assets/images/hero-image.svg" alt="Online Learning" class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Courses -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold">Featured Courses</h2>
+                    <p class="lead">Top-rated courses selected for their quality content and excellent reviews.</p>
+                </div>
+                <div class="col-lg-6 text-end">
+                    <a href="pages/courses.html" class="btn btn-outline-primary">View All Courses</a>
+                </div>
+            </div>
+            <div class="row g-4">
+                <!-- Course Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <div class="position-relative">
+                            <img src="assets/images/course1.jpg" class="card-img-top" alt="Data Science Fundamentals">
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-2">Bestseller</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Data Science</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.8 (240)</span>
+                                </div>
+                            </div>
+                            <h5 class="card-title">Data Science Fundamentals</h5>
+                            <p class="card-text text-muted mb-1">Master key concepts in data analysis, Python, and machine learning</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="assets/images/instructor1.jpg" alt="Instructor" class="rounded-circle me-2" width="25" height="25">
+                                <small>Dr. Sarah Johnson</small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="fw-bold text-primary">$49.99</span>
+                                <a href="pages/course-details.html?id=1" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <div class="position-relative">
+                            <img src="assets/images/course2.jpg" class="card-img-top" alt="Web Development Bootcamp">
+                            <span class="badge bg-success position-absolute top-0 end-0 m-2">New</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Web Development</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.9 (315)</span>
+                                </div>
+                            </div>
+                            <h5 class="card-title">Full-Stack Web Development</h5>
+                            <p class="card-text text-muted mb-1">Comprehensive guide to modern web development with MERN stack</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="assets/images/instructor2.jpg" alt="Instructor" class="rounded-circle me-2" width="25" height="25">
+                                <small>Alex Rivera</small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="fw-bold text-primary">$59.99</span>
+                                <a href="pages/course-details.html?id=2" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <img src="assets/images/course3.jpg" class="card-img-top" alt="Business Leadership">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Business</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.7 (189)</span>
+                                </div>
+                            </div>
+                            <h5 class="card-title">Strategic Leadership Skills</h5>
+                            <p class="card-text text-muted mb-1">Develop essential leadership skills for the modern workplace</p>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="assets/images/instructor3.jpg" alt="Instructor" class="rounded-circle me-2" width="25" height="25">
+                                <small>Michael Chen, MBA</small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="fw-bold text-primary">$39.99</span>
+                                <a href="pages/course-details.html?id=3" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">How LearnHub Works</h2>
+                <p class="lead">Learning has never been easier. Start your journey in three simple steps.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <div class="bg-light p-4 rounded-circle mx-auto mb-3" style="width: 100px; height: 100px;">
+                        <i class="fas fa-search fa-3x text-primary mt-2"></i>
+                    </div>
+                    <h4>Discover</h4>
+                    <p>Browse our catalog of expert-led courses designed for professional growth.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="bg-light p-4 rounded-circle mx-auto mb-3" style="width: 100px; height: 100px;">
+                        <i class="fas fa-play fa-3x text-primary mt-2"></i>
+                    </div>
+                    <h4>Learn</h4>
+                    <p>Access high-quality video lessons, quizzes, and hands-on projects.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="bg-light p-4 rounded-circle mx-auto mb-3" style="width: 100px; height: 100px;">
+                        <i class="fas fa-certificate fa-3x text-primary mt-2"></i>
+                    </div>
+                    <h4>Achieve</h4>
+                    <p>Earn certificates, build your portfolio, and advance your career.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">What Our Students Say</h2>
+                <p class="lead">Join thousands of satisfied professionals who have transformed their careers.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"The Data Science course was exactly what I needed to transition into a new role. The structured approach and hands-on projects gave me practical skills I use daily."</p>
+                            <div class="d-flex align-items-center">
+                                <img src="assets/images/testimonial1.jpg" alt="Student" class="rounded-circle me-3" width="60" height="60">
+                                <div>
+                                    <h6 class="mb-0">Jennifer Lee</h6>
+                                    <p class="text-muted mb-0">Data Analyst at Acme Inc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"As a busy professional, the flexibility of LearnHub was perfect. I could learn at my own pace, and the interactive quizzes helped reinforce my understanding."</p>
+                            <div class="d-flex align-items-center">
+                                <img src="assets/images/testimonial2.jpg" alt="Student" class="rounded-circle me-3" width="60" height="60">
+                                <div>
+                                    <h6 class="mb-0">David Rodriguez</h6>
+                                    <p class="text-muted mb-0">Product Manager</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"The Strategic Leadership course transformed how I approach management. The instructor's real-world examples and personalized feedback were invaluable."</p>
+                            <div class="d-flex align-items-center">
+                                <img src="assets/images/testimonial3.jpg" alt="Student" class="rounded-circle me-3" width="60" height="60">
+                                <div>
+                                    <h6 class="mb-0">Emma Thompson</h6>
+                                    <p class="text-muted mb-0">Director of Operations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold">Ready to start your learning journey?</h2>
+                    <p class="lead mb-0">Join LearnHub today and get access to over 200 courses.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <a href="pages/signup.html" class="btn btn-light btn-lg">Get Started Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="mb-3"><span class="text-primary">Learn</span>Hub</h4>
+                    <p>Empowering professionals with high-quality, accessible education to advance their careers and achieve their goals.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="pages/courses.html" class="text-white text-decoration-none">Courses</a></li>
+                        <li><a href="pages/about.html" class="text-white text-decoration-none">About Us</a></li>
+                        <li><a href="pages/contact.html" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h5 class="mb-3">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Data Science</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Web Development</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Business</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Design</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="mb-3">Newsletter</h5>
+                    <p>Subscribe to get updates on new courses and features</p>
+                    <form class="d-flex">
+                        <input type="email" class="form-control me-2" placeholder="Your email">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-md-0">© 2025 LearnHub. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-white text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-white text-decoration-none">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

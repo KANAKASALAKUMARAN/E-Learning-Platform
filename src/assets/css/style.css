@@ -1,0 +1,112 @@
+/* Main Styles for LearnHub E-Learning Platform */
+
+/* Global Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #333;
+  padding-top: 75px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+/* Header & Navigation */
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
+
+/* Course Card Styles */
+.course-card {
+  transition: all 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Course Badge */
+.course-badge {
+  z-index: 5;
+}
+
+/* Instructor Image */
+.instructor-img {
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+}
+
+/* Course Filter Sidebar */
+.filters {
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+
+/* Course Details Page */
+.course-header {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dashboard */
+.dashboard-sidebar {
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 75px);
+}
+
+.sidebar-link {
+  color: #495057;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  color: #007bff;
+  background-color: #e9ecef;
+}
+
+.sidebar-link i {
+  margin-right: 0.75rem;
+}
+
+/* Login and Signup */
+.auth-form {
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* User Profile */
+.user-profile img {
+  object-fit: cover;
+}

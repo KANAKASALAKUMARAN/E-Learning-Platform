@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | LearnHub</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../index.html">
+                <span class="text-primary">Learn</span>Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="courses.html">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                
+                <!-- Login/Signup buttons (shown when not logged in) -->
+                <div class="d-flex login-buttons">
+                    <a href="login.html" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+                
+                <!-- User profile dropdown (shown when logged in) -->
+                <div class="user-profile dropdown" style="display: none;">
+                    <a class="dropdown-toggle text-decoration-none d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="../assets/images/avatar-placeholder.jpg" class="rounded-circle me-2" width="32" height="32" alt="User Avatar">
+                        <span class="user-name">User Name</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                        <li><a class="dropdown-item" href="my-courses.html"><i class="fas fa-graduation-cap me-2"></i>My Courses</a></li>
+                        <li><a class="dropdown-item" href="achievements.html"><i class="fas fa-medal me-2"></i>Achievements</a></li>
+                        <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Hero Section -->
+    <section class="course-hero py-5 bg-light mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="courses.html">Courses</a></li>
+                            <li class="breadcrumb-item"><a href="#">Data Science</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Data Science Fundamentals</li>
+                        </ol>
+                    </nav>
+                    <h1 class="fw-bold mb-3 course-title">Data Science Fundamentals</h1>
+                    <p class="lead mb-3 course-description">Master key concepts in data analysis, Python, and machine learning</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="me-4">
+                            <span class="me-1"><i class="fas fa-star text-warning"></i></span>
+                            <span class="course-rating">4.8</span>
+                            <span class="text-muted course-reviews">(240 reviews)</span>
+                        </div>
+                        <div class="me-4">
+                            <span class="me-1"><i class="fas fa-user text-muted"></i></span>
+                            <span class="course-students">10,256 students</span>
+                        </div>
+                        <div>
+                            <span class="me-1"><i class="fas fa-clock text-muted"></i></span>
+                            <span class="course-hours">24 hours</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <img src="../assets/images/instructor1.jpg" class="rounded-circle me-2" width="40" height="40" alt="Instructor">
+                        <span>Created by <a href="#" class="text-decoration-none fw-semibold">Dr. Sarah Johnson</a></span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="me-3"><i class="fas fa-calendar-alt text-muted me-1"></i> Last updated: March 2025</span>
+                        <span><i class="fas fa-globe text-muted me-1"></i> English</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-4 mt-lg-0">
+                    <div class="card course-sidebar border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="video-container mb-4 rounded overflow-hidden">
+                                <img src="../assets/images/course1-preview.jpg" alt="Course Preview" class="img-fluid w-100">
+                                <a href="#" class="btn btn-primary btn-lg position-absolute top-50 start-50 translate-middle preview-btn">
+                                    <i class="fas fa-play me-1"></i> Preview Course
+                                </a>
+                            </div>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h3 class="fw-bold mb-0">$49.99</h3>
+                                    <span class="text-decoration-line-through text-muted">$99.99</span>
+                                </div>
+                                <span class="badge bg-danger mb-3">50% Off - Limited time</span>
+                                <div class="d-grid gap-2">
+                                    <a href="#" class="btn btn-primary btn-lg fw-semibold">Enroll Now</a>
+                                    <a href="#" class="btn btn-outline-primary"><i class="fas fa-shopping-cart me-1"></i> Add to Cart</a>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-light rounded mb-4">
+                                <h5 class="fw-bold mb-3">This course includes:</h5>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-play-circle me-2 text-muted"></i>
+                                    <span>24 hours on-demand video</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-file-alt me-2 text-muted"></i>
+                                    <span>75 articles</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-download me-2 text-muted"></i>
+                                    <span>50 downloadable resources</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-infinity me-2 text-muted"></i>
+                                    <span>Full lifetime access</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-mobile-alt me-2 text-muted"></i>
+                                    <span>Access on mobile and TV</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-certificate me-2 text-muted"></i>
+                                    <span>Certificate of completion</span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="me-3">Share</a>
+                                <a href="#" class="me-3">Gift this course</a>
+                                <a href="#">Apply Coupon</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Content Tabs -->
+    <section class="course-content py-5">
+        <div class="container">
+            <ul class="nav nav-tabs mb-4" id="courseTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="curriculum-tab" data-bs-toggle="tab" data-bs-target="#curriculum" type="button" role="tab" aria-controls="curriculum" aria-selected="false">Curriculum</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="instructor-tab" data-bs-toggle="tab" data-bs-target="#instructor" type="button" role="tab" aria-controls="instructor" aria-selected="false">Instructor</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="courseTabContent">
+                <!-- Overview Tab -->
+                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h3 class="mb-4">What you'll learn</h3>
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Master Python programming for data analysis</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Learn data manipulation with NumPy and Pandas</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Create visualizations with Matplotlib and Seaborn</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Understand statistical analysis principles</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Build predictive models using machine learning</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Implement supervised and unsupervised learning</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Apply data science techniques to real-world problems</p>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <i class="fas fa-check text-primary me-2 mt-1"></i>
+                                        <p class="mb-0">Build a portfolio of data science projects</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h3 class="mb-3">Course Description</h3>
+                            <p>This comprehensive Data Science course will give you all the tools you need to start your journey as a Data Scientist. Whether you're a complete beginner or looking to enhance your existing skills, this course covers everything from the fundamentals of Python programming to advanced machine learning techniques.</p>
+                            
+                            <p>Starting with the basics, we'll guide you through setting up your development environment and introduce you to Python, the most popular language for data science. You'll quickly move on to working with powerful libraries like NumPy, Pandas, and Matplotlib to manipulate and visualize data effectively.</p>
+                            
+                            <p>As you progress, you'll dive into statistical analysis, learning how to extract meaningful insights from complex datasets. The course then transitions into machine learning, where you'll build predictive models using both supervised and unsupervised learning techniques. You'll work with real-world datasets and solve practical problems that data scientists face daily.</p>
+                            
+                            <div class="d-flex align-items-center my-4 p-3 bg-light rounded">
+                                <i class="fas fa-certificate text-primary fa-2x me-3"></i>
+                                <p class="mb-0">Upon completion, you'll receive a certificate that you can add to your LinkedIn profile or resume to showcase your new data science skills.</p>
+                            </div>
+                            
+                            <h3 class="mb-3">Requirements</h3>
+                            <ul class="mb-4">
+                                <li>Basic computer skills and familiarity with file systems</li>
+                                <li>No prior programming experience necessary - we'll start from the basics</li>
+                                <li>High school level math (basic algebra and statistics knowledge helpful but not required)</li>
+                                <li>A computer with internet access (Windows, Mac, or Linux)</li>
+                            </ul>
+                            
+                            <h3 class="mb-3">Who this course is for</h3>
+                            <ul class="mb-4">
+                                <li>Beginners with no prior experience who want to learn data science from scratch</li>
+                                <li>Professionals looking to switch careers into the high-demand field of data science</li>
+                                <li>Analysts who want to enhance their skills with Python and machine learning</li>
+                                <li>Students interested in pursuing data-related careers</li>
+                                <li>Anyone interested in learning how to extract insights from data</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Curriculum Tab -->
+                <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h3 class="mb-4">Course Content</h3>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>10 sections • 42 lectures • 24h total length</span>
+                                <a href="#" class="text-decoration-none">Expand all sections</a>
+                            </div>
+                            
+                            <!-- Section 1 -->
+                            <div class="accordion mb-3" id="section1">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading1">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                            <div class="w-100 d-flex justify-content-between">
+                                                <span>Section 1: Introduction to Data Science</span>
+                                                <span class="text-muted small">4 lectures • 2h 15m</span>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#section1">
+                                        <div class="accordion-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Welcome to Data Science Fundamentals</span>
+                                                    <span class="badge bg-success ms-2">Preview</span>
+                                                </div>
+                                                <span class="text-muted">15:30</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>What is Data Science?</span>
+                                                </div>
+                                                <span class="text-muted">32:45</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Setting Up Your Environment</span>
+                                                </div>
+                                                <span class="text-muted">45:20</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="fas fa-file-alt me-2"></i>
+                                                    <span>Data Science Career Paths</span>
+                                                </div>
+                                                <span class="text-muted">41:30</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 2 -->
+                            <div class="accordion mb-3" id="section2">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading2">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                            <div class="w-100 d-flex justify-content-between">
+                                                <span>Section 2: Python Programming Fundamentals</span>
+                                                <span class="text-muted small">5 lectures • 3h 20m</span>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#section2">
+                                        <div class="accordion-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Python Basics: Syntax and Variables</span>
+                                                </div>
+                                                <span class="text-muted">40:15</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Control Flow: If Statements and Loops</span>
+                                                </div>
+                                                <span class="text-muted">38:30</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Functions and Modules</span>
+                                                </div>
+                                                <span class="text-muted">42:15</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Working with Data Structures</span>
+                                                </div>
+                                                <span class="text-muted">35:40</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="fas fa-file-alt me-2"></i>
+                                                    <span>Practical Exercises and Solutions</span>
+                                                </div>
+                                                <span class="text-muted">43:20</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Section 3 -->
+                            <div class="accordion mb-3" id="section3">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading3">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                            <div class="w-100 d-flex justify-content-between">
+                                                <span>Section 3: Data Manipulation with NumPy and Pandas</span>
+                                                <span class="text-muted small">4 lectures • 2h 50m</span>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#section3">
+                                        <div class="accordion-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Introduction to NumPy Arrays</span>
+                                                </div>
+                                                <span class="text-muted">38:20</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Pandas DataFrame Basics</span>
+                                                </div>
+                                                <span class="text-muted">45:15</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <div>
+                                                    <i class="fas fa-play-circle me-2"></i>
+                                                    <span>Data Cleaning and Preprocessing</span>
+                                                </div>
+                                                <span class="text-muted">43:10</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <i class="fas fa-file-alt me-2"></i>
+                                                    <span>Data Manipulation Project</span>
+                                                </div>
+                                                <span class="text-muted">44:05</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- More sections summary -->
+                            <div class="accordion mb-3" id="sectionOthers">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOthers">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOthers" aria-expanded="false" aria-controls="collapseOthers">
+                                            <div class="w-100 d-flex justify-content-between">
+                                                <span>7 more sections...</span>
+                                                <span class="text-muted small">29 lectures • 15h 35m</span>
+                                            </div>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOthers" class="accordion-collapse collapse" aria-labelledby="headingOthers" data-bs-parent="#sectionOthers">
+                                        <div class="accordion-body">
+                                            <p>Section 4: Data Visualization with Matplotlib and Seaborn</p>
+                                            <p>Section 5: Exploratory Data Analysis</p>
+                                            <p>Section 6: Statistical Analysis and Hypothesis Testing</p>
+                                            <p>Section 7: Machine Learning Fundamentals</p>
+                                            <p>Section 8: Supervised Learning Algorithms</p>
+                                            <p>Section 9: Unsupervised Learning and Clustering</p>
+                                            <p>Section 10: Capstone Project: End-to-End Data Science</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sample Quiz Section -->
+                            <div class="quiz-container p-4 my-5" data-quiz-id="ds101-quiz1" data-correct="b">
+                                <h4 class="mb-4">Sample Quiz: Test Your Knowledge</h4>
+                                <div class="mb-3">
+                                    <p class="fw-semibold">Which of the following libraries is NOT primarily used for data visualization in Python?</p>
+                                    <div class="quiz-option" data-option="a">
+                                        <div class="d-flex">
+                                            <div class="me-3">A.</div>
+                                            <div>Matplotlib</div>
+                                        </div>
+                                    </div>
+                                    <div class="quiz-option" data-option="b">
+                                        <div class="d-flex">
+                                            <div class="me-3">B.</div>
+                                            <div>NumPy</div>
+                                        </div>
+                                    </div>
+                                    <div class="quiz-option" data-option="c">
+                                        <div class="d-flex">
+                                            <div class="me-3">C.</div>
+                                            <div>Seaborn</div>
+                                        </div>
+                                    </div>
+                                    <div class="quiz-option" data-option="d">
+                                        <div class="d-flex">
+                                            <div class="me-3">D.</div>
+                                            <div>Plotly</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-primary" id="submitQuiz">Submit Answer</button>
+                                    <a href="#" class="btn btn-success" id="nextLesson" style="display: none;">Continue to Next Lesson</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Instructor Tab -->
+                <div class="tab-pane fade" id="instructor" role="tabpanel" aria-labelledby="instructor-tab">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h3 class="mb-4">Your Instructor</h3>
+                            <div class="d-flex mb-4">
+                                <img src="../assets/images/instructor1.jpg" class="rounded-circle me-4" width="120" height="120" alt="Instructor">
+                                <div>
+                                    <h4 class="mb-1">Dr. Sarah Johnson</h4>
+                                    <p class="text-muted">Data Scientist and Machine Learning Engineer</p>
+                                    <div class="mb-3">
+                                        <span class="me-3"><i class="fas fa-star text-warning me-1"></i>4.8 Instructor Rating</span>
+                                        <span class="me-3"><i class="fas fa-award text-warning me-1"></i>24 Courses</span>
+                                        <span><i class="fas fa-user text-muted me-1"></i>45,000+ Students</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <p>Dr. Sarah Johnson is a Data Scientist with over 10 years of experience in the industry. She holds a Ph.D. in Computer Science from MIT, specializing in Machine Learning and Artificial Intelligence.</p>
+                                <p>Prior to teaching on LearnHub, Sarah worked at Google as a Senior Data Scientist, where she led projects in predictive analytics and natural language processing. She also served as an Associate Professor at Stanford University, teaching courses in Data Science and Machine Learning.</p>
+                                <p>Sarah is passionate about making complex data science concepts accessible to everyone. Her teaching style combines theoretical knowledge with practical, hands-on examples that prepare students for real-world data challenges.</p>
+                                <p>When she's not teaching or analyzing data, Sarah enjoys hiking, photography, and mentoring aspiring data scientists through various non-profit organizations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h3 class="mb-4">Student Reviews</h3>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="me-4">
+                                    <h2 class="mb-0 fw-bold">4.8</h2>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                    </div>
+                                    <p class="mb-0">Course Rating</p>
+                                </div>
+                                <div class="w-100">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-2">5 stars</div>
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 75%"></div>
+                                        </div>
+                                        <div class="ms-2">75%</div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-2">4 stars</div>
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 18%"></div>
+                                        </div>
+                                        <div class="ms-2">18%</div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-2">3 stars</div>
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 5%"></div>
+                                        </div>
+                                        <div class="ms-2">5%</div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-2">2 stars</div>
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 1%"></div>
+                                        </div>
+                                        <div class="ms-2">1%</div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="me-2">1 star</div>
+                                        <div class="progress flex-grow-1" style="height: 8px;">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 1%"></div>
+                                        </div>
+                                        <div class="ms-2">1%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4>Reviews (240)</h4>
+                                    <select class="form-select form-select-sm" style="width: auto;">
+                                        <option selected>Most Helpful</option>
+                                        <option>Most Recent</option>
+                                        <option>Highest Rated</option>
+                                        <option>Lowest Rated</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Review 1 -->
+                                <div class="card border-0 shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="../assets/images/user1.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                                                <div>
+                                                    <h6 class="mb-0">Michael P.</h6>
+                                                    <p class="text-muted small mb-0">2 months ago</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="mb-2">Excellent introduction to data science!</h6>
+                                        <p>This course exceeded my expectations. Dr. Johnson explains complex concepts in a way that's easy to understand, and the projects helped me apply what I learned immediately. I had zero programming experience before this course, and now I feel confident working with data using Python.</p>
+                                        <div class="d-flex align-items-center mt-3">
+                                            <button class="btn btn-sm btn-light me-2">
+                                                <i class="fas fa-thumbs-up me-1"></i> Helpful (45)
+                                            </button>
+                                            <span class="text-muted small">Was this review helpful?</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Review 2 -->
+                                <div class="card border-0 shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="../assets/images/user2.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                                                <div>
+                                                    <h6 class="mb-0">Jessica T.</h6>
+                                                    <p class="text-muted small mb-0">1 month ago</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="mb-2">Finally a course that delivers what it promises!</h6>
+                                        <p>As someone transitioning from marketing to data analysis, this course was exactly what I needed. The curriculum is well-structured, and the instructor's expertise is evident. The hands-on projects were challenging but incredibly rewarding. I've already landed a junior data analyst position thanks to the skills I gained from this course!</p>
+                                        <div class="d-flex align-items-center mt-3">
+                                            <button class="btn btn-sm btn-light me-2">
+                                                <i class="fas fa-thumbs-up me-1"></i> Helpful (32)
+                                            </button>
+                                            <span class="text-muted small">Was this review helpful?</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Review 3 -->
+                                <div class="card border-0 shadow-sm mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <img src="../assets/images/user3.jpg" class="rounded-circle me-2" width="40" height="40" alt="User">
+                                                <div>
+                                                    <h6 class="mb-0">Robert K.</h6>
+                                                    <p class="text-muted small mb-0">3 months ago</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="fas fa-star text-warning"></i>
+                                                <i class="far fa-star text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <h6 class="mb-2">Great content, but could use more advanced material</h6>
+                                        <p>The course provides an excellent foundation in data science concepts and Python. Dr. Johnson is a great instructor who clearly explains complex topics. My only criticism is that I wish there were more advanced topics covered in the later sections. Nevertheless, it's a solid course that I would recommend to beginners.</p>
+                                        <div class="d-flex align-items-center mt-3">
+                                            <button class="btn btn-sm btn-light me-2">
+                                                <i class="fas fa-thumbs-up me-1"></i> Helpful (19)
+                                            </button>
+                                            <span class="text-muted small">Was this review helpful?</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Load More Reviews Button -->
+                                <div class="d-grid">
+                                    <button class="btn btn-outline-primary">Load More Reviews</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Courses -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h3 class="mb-4">Students Also Bought</h3>
+            <div class="row g-4">
+                <!-- Related Course 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <img src="../assets/images/course2.jpg" class="card-img-top" alt="Web Development Bootcamp">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Web Development</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                            <h6 class="card-title">Full-Stack Web Development</h6>
+                            <p class="card-text text-muted small mb-0">Comprehensive guide to modern web development</p>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="fw-bold text-primary">$59.99</span>
+                                <a href="course-details.html?id=2" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Course 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <img src="../assets/images/course3.jpg" class="card-img-top" alt="Strategic Leadership">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Business</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.7</span>
+                                </div>
+                            </div>
+                            <h6 class="card-title">Strategic Leadership Skills</h6>
+                            <p class="card-text text-muted small mb-0">Essential leadership skills for professionals</p>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="fw-bold text-primary">$39.99</span>
+                                <a href="course-details.html?id=3" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Course 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <img src="../assets/images/course6.jpg" class="card-img-top" alt="Machine Learning">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Data Science</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                            <h6 class="card-title">Advanced Machine Learning</h6>
+                            <p class="card-text text-muted small mb-0">Deep dive into neural networks and AI</p>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="fw-bold text-primary">$69.99</span>
+                                <a href="course-details.html?id=6" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Related Course 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 shadow-sm border-0 course-card">
+                        <img src="../assets/images/course5.jpg" class="card-img-top" alt="Digital Marketing">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="badge bg-light text-dark">Marketing</span>
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            <h6 class="card-title">Digital Marketing Mastery</h6>
+                            <p class="card-text text-muted small mb-0">SEO, SEM, and social media strategies</p>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="fw-bold text-primary">$54.99</span>
+                                <a href="course-details.html?id=5" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action -->
+    <section class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-3">Ready to start your data science journey?</h2>
+            <p class="lead mb-4">Join thousands of students who have transformed their careers with this course</p>
+            <a href="#" class="btn btn-light btn-lg px-5">Enroll Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="mb-3"><span class="text-primary">Learn</span>Hub</h4>
+                    <p>Empowering professionals with high-quality, accessible education to advance their careers and achieve their goals.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html" class="text-white text-decoration-none">Home</a></li>
+                        <li><a href="courses.html" class="text-white text-decoration-none">Courses</a></li>
+                        <li><a href="about.html" class="text-white text-decoration-none">About Us</a></li>
+                        <li><a href="contact.html" class="text-white text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h5 class="mb-3">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white text-decoration-none">Data Science</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Web Development</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Business</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Design</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="mb-3">Newsletter</h5>
+                    <p>Subscribe to get updates on new courses and features</p>
+                    <form class="d-flex">
+                        <input type="email" class="form-control me-2" placeholder="Your email">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-md-0">© 2025 LearnHub. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-white text-decoration-none me-3">Privacy Policy</a>
+                    <a href="#" class="text-white text-decoration-none me-3">Terms of Service</a>
+                    <a href="#" class="text-white text-decoration-none">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
