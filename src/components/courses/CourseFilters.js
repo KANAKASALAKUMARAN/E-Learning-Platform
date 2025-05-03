@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Form, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter, faTimes, faStar } from '@fortawesome/free-solid-svg-icons';
 
-function CourseFilters({ onFilterChange }) {
+function CourseFilters({ onFilterChange, disabled }) {
   const [filters, setFilters] = useState({
     categories: { all: true },
     levels: { all: true },
@@ -13,13 +13,18 @@ function CourseFilters({ onFilterChange }) {
     price: 'all'
   });
 
-  // Update parent component when filters change
+  // Update parent component when filters change with debounce
   useEffect(() => {
-    onFilterChange(filters);
+    // Use a small timeout to batch multiple filter changes together
+    const timerId = setTimeout(() => {
+      onFilterChange(filters);
+    }, 50);
+    
+    return () => clearTimeout(timerId);
   }, [filters, onFilterChange]);
 
   // Handle category filter changes
-  const handleCategoryChange = (e) => {
+  const handleCategoryChange = useCallback((e) => {
     const { name, checked } = e.target;
     
     if (name === 'all') {
@@ -36,28 +41,30 @@ function CourseFilters({ onFilterChange }) {
         }
       }));
     } else {
-      const updatedCategories = {
-        ...filters.categories,
-        [name]: checked
-      };
-      
-      // Update 'all' checkbox based on others
-      const allSelected = Object.keys(updatedCategories)
-        .filter(key => key !== 'all')
-        .every(key => updatedCategories[key]);
-      
-      setFilters(prev => ({
-        ...prev,
-        categories: {
-          ...updatedCategories,
-          all: allSelected
-        }
-      }));
+      setFilters(prev => {
+        const updatedCategories = {
+          ...prev.categories,
+          [name]: checked
+        };
+        
+        // Update 'all' checkbox based on others
+        const allSelected = Object.keys(updatedCategories)
+          .filter(key => key !== 'all')
+          .every(key => updatedCategories[key]);
+        
+        return {
+          ...prev,
+          categories: {
+            ...updatedCategories,
+            all: allSelected
+          }
+        };
+      });
     }
-  };
+  }, []);
 
   // Handle level filter changes
-  const handleLevelChange = (e) => {
+  const handleLevelChange = useCallback((e) => {
     const { name, checked } = e.target;
     
     if (name === 'all') {
@@ -71,28 +78,30 @@ function CourseFilters({ onFilterChange }) {
         }
       }));
     } else {
-      const updatedLevels = {
-        ...filters.levels,
-        [name]: checked
-      };
-      
-      // Update 'all' checkbox based on others
-      const allSelected = Object.keys(updatedLevels)
-        .filter(key => key !== 'all')
-        .every(key => updatedLevels[key]);
-      
-      setFilters(prev => ({
-        ...prev,
-        levels: {
-          ...updatedLevels,
-          all: allSelected
-        }
-      }));
+      setFilters(prev => {
+        const updatedLevels = {
+          ...prev.levels,
+          [name]: checked
+        };
+        
+        // Update 'all' checkbox based on others
+        const allSelected = Object.keys(updatedLevels)
+          .filter(key => key !== 'all')
+          .every(key => updatedLevels[key]);
+        
+        return {
+          ...prev,
+          levels: {
+            ...updatedLevels,
+            all: allSelected
+          }
+        };
+      });
     }
-  };
+  }, []);
 
   // Handle duration filter changes
-  const handleDurationChange = (e) => {
+  const handleDurationChange = useCallback((e) => {
     const { name, checked } = e.target;
     
     if (name === 'all') {
@@ -107,37 +116,44 @@ function CourseFilters({ onFilterChange }) {
         }
       }));
     } else {
-      const updatedDurations = {
-        ...filters.durations,
-        [name]: checked
-      };
-      
-      // Update 'all' checkbox based on others
-      const allSelected = Object.keys(updatedDurations)
-        .filter(key => key !== 'all')
-        .every(key => updatedDurations[key]);
-      
-      setFilters(prev => ({
-        ...prev,
-        durations: {
-          ...updatedDurations,
-          all: allSelected
-        }
-      }));
+      setFilters(prev => {
+        const updatedDurations = {
+          ...prev.durations,
+          [name]: checked
+        };
+        
+        // Update 'all' checkbox based on others
+        const allSelected = Object.keys(updatedDurations)
+          .filter(key => key !== 'all')
+          .every(key => updatedDurations[key]);
+        
+        return {
+          ...prev,
+          durations: {
+            ...updatedDurations,
+            all: allSelected
+          }
+        };
+      });
     }
-  };
+  }, []);
 
   // Handle radio button changes
-  const handleRadioChange = (e) => {
+  const handleRadioChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    setFilters(prev => {
+      // Don't update if value hasn't changed
+      if (prev[name] === value) return prev;
+      
+      return {
+        ...prev,
+        [name]: value
+      };
+    });
+  }, []);
 
   // Reset all filters
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setFilters({
       categories: { all: true },
       levels: { all: true },
@@ -145,7 +161,7 @@ function CourseFilters({ onFilterChange }) {
       durations: { all: true },
       price: 'all'
     });
-  };
+  }, []);
 
   return (
     <div className="course-filters">
@@ -158,6 +174,7 @@ function CourseFilters({ onFilterChange }) {
           variant="link" 
           className="p-0 text-decoration-none" 
           onClick={resetFilters}
+          disabled={disabled}
         >
           <FontAwesomeIcon icon={faTimes} className="me-1" />
           Reset
@@ -177,6 +194,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.all} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -186,6 +204,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.programming} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -195,6 +214,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.design} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -204,6 +224,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.business} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -213,6 +234,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.marketing} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -222,6 +244,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.categories.photography} 
               onChange={handleCategoryChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -230,6 +253,7 @@ function CourseFilters({ onFilterChange }) {
               name="music" 
               checked={filters.categories.music} 
               onChange={handleCategoryChange}
+              disabled={disabled}
             />
           </Form>
         </Card.Body>
@@ -248,6 +272,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.levels.all} 
               onChange={handleLevelChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -257,6 +282,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.levels.beginner} 
               onChange={handleLevelChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -266,6 +292,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.levels.intermediate} 
               onChange={handleLevelChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -274,6 +301,7 @@ function CourseFilters({ onFilterChange }) {
               name="advanced" 
               checked={filters.levels.advanced} 
               onChange={handleLevelChange}
+              disabled={disabled}
             />
           </Form>
         </Card.Body>
@@ -293,6 +321,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.rating === 'all'} 
               onChange={handleRadioChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="radio" 
@@ -313,6 +342,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.rating === '4plus'} 
               onChange={handleRadioChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="radio" 
@@ -334,6 +364,7 @@ function CourseFilters({ onFilterChange }) {
               value="3plus" 
               checked={filters.rating === '3plus'} 
               onChange={handleRadioChange}
+              disabled={disabled}
             />
           </Form>
         </Card.Body>
@@ -352,6 +383,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.durations.all} 
               onChange={handleDurationChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -361,6 +393,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.durations.short} 
               onChange={handleDurationChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -370,6 +403,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.durations.medium} 
               onChange={handleDurationChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -379,6 +413,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.durations.long} 
               onChange={handleDurationChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="checkbox" 
@@ -387,6 +422,7 @@ function CourseFilters({ onFilterChange }) {
               name="extraLong" 
               checked={filters.durations.extraLong} 
               onChange={handleDurationChange}
+              disabled={disabled}
             />
           </Form>
         </Card.Body>
@@ -406,6 +442,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.price === 'all'} 
               onChange={handleRadioChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="radio" 
@@ -416,6 +453,7 @@ function CourseFilters({ onFilterChange }) {
               checked={filters.price === 'free'} 
               onChange={handleRadioChange}
               className="mb-2"
+              disabled={disabled}
             />
             <Form.Check 
               type="radio" 
@@ -425,6 +463,7 @@ function CourseFilters({ onFilterChange }) {
               value="paid" 
               checked={filters.price === 'paid'} 
               onChange={handleRadioChange}
+              disabled={disabled}
             />
           </Form>
         </Card.Body>
@@ -434,7 +473,12 @@ function CourseFilters({ onFilterChange }) {
 }
 
 CourseFilters.propTypes = {
-  onFilterChange: PropTypes.func.isRequired
+  onFilterChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool
 };
 
-export default CourseFilters;
+CourseFilters.defaultProps = {
+  disabled: false
+};
+
+export default React.memo(CourseFilters);

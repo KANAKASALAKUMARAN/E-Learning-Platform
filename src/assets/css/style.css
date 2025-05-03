@@ -110,3 +110,42 @@ h1, h2, h3, h4, h5, h6 {
 .user-profile img {
   object-fit: cover;
 }
+
+/* HomePage Styles */
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Remove top padding for HomePage main content */
+.home-page {
+  margin-top: -3rem;
+}
+
+/* Responsive image for hero section */
+.hero-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Section spacing and backgrounds */
+.hero-section {
+  padding: 6rem 0;
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.features-section {
+  padding: 5rem 0;
+}
+
+.cta-section {
+  padding: 5rem 0;
+  background-color: #f8f9fa;
+}
