@@ -11,6 +11,7 @@ import CoursesPage from './pages/CoursesPage';
 import CourseDetailsPage from './pages/CourseDetailsPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import DashboardPage from './pages/DashboardPage';
 
 function MainContent() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function MainContent() {
         <Route path="/course/:id" element={<CourseDetailsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         {/* Add more routes as needed */}
       </Routes>
     </main>

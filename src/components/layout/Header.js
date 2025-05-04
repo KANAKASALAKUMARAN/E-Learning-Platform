@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faTachometerAlt, 
-  faGraduationCap, 
-  faMedal, 
-  faUser, 
-  faSignOutAlt 
+  faSearch, 
+  faUser,
+  faSignOutAlt,
+  faCog,
+  faGraduationCap,
+  faTrophy,
+  faBook,
+  faUserGraduate
 } from '@fortawesome/free-solid-svg-icons';
+import AuthService from '../../services/api/authService';
 
 function Header() {
-  // You would typically get this from a global state or context
+  // Get user state from localStorage
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({
     name: 'User Name',
@@ -19,15 +23,42 @@ function Header() {
   
   const navigate = useNavigate();
   
+  useEffect(() => {
+    // Check if user is logged in
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      setIsLoggedIn(true);
+      const userData = JSON.parse(storedUser);
+      setUser({
+        name: userData.name,
+        avatar: userData.avatar || '/assets/images/avatar-placeholder.jpg'
+      });
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+  
   const handleLogout = () => {
-    // In a real app, this would call an API endpoint to logout
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     setIsLoggedIn(false);
     navigate('/');
   };
-  
-  // For demo purposes only - toggle logged in state
-  const toggleLoggedIn = () => {
-    setIsLoggedIn(!isLoggedIn);
+
+  const handleDemoLogin = () => {
+    // Use the authService for demo login
+    const { user: demoUser } = AuthService.demoLogin();
+    
+    // Update local state
+    setIsLoggedIn(true);
+    setUser({
+      name: demoUser.name,
+      avatar: demoUser.avatar || '/assets/images/avatar-placeholder.jpg'
+    });
+    
+    // Redirect to dashboard
+    navigate('/dashboard');
   };
 
   return (
@@ -68,6 +99,18 @@ function Header() {
                 Courses
               </NavLink>
             </li>
+            {isLoggedIn && (
+              <li className="nav-item">
+                <NavLink 
+                  className={({ isActive }) => 
+                    isActive ? "nav-link active" : "nav-link"
+                  } 
+                  to="/dashboard"
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+            )}
             <li className="nav-item">
               <NavLink 
                 className={({ isActive }) => 
@@ -78,94 +121,71 @@ function Header() {
                 About Us
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink 
-                className={({ isActive }) => 
-                  isActive ? "nav-link active" : "nav-link"
-                } 
-                to="/contact"
-              >
-                Contact
-              </NavLink>
-            </li>
           </ul>
           
-          {/* Login/Signup buttons (shown when not logged in) */}
-          {!isLoggedIn ? (
-            <div className="d-flex login-buttons">
-              <Link to="/login" className="btn btn-outline-primary me-2">
-                Login
-              </Link>
-              <Link to="/signup" className="btn btn-primary">
-                Sign Up
-              </Link>
-            </div>
-          ) : (
-            /* User profile dropdown (shown when logged in) */
-            <div className="user-profile dropdown">
-              <a 
-                className="dropdown-toggle text-decoration-none d-flex align-items-center" 
-                href="#" 
-                role="button" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false"
-              >
-                <img 
-                  src={user.avatar} 
-                  className="rounded-circle me-2" 
-                  width="32" 
-                  height="32" 
-                  alt="User Avatar" 
-                />
-                <span className="user-name">{user.name}</span>
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end">
-                <li>
-                  <Link className="dropdown-item" to="/dashboard">
-                    <FontAwesomeIcon icon={faTachometerAlt} className="me-2" />
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/my-courses">
-                    <FontAwesomeIcon icon={faGraduationCap} className="me-2" />
-                    My Courses
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/achievements">
-                    <FontAwesomeIcon icon={faMedal} className="me-2" />
-                    Achievements
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/profile">
-                    <FontAwesomeIcon icon={faUser} className="me-2" />
-                    Profile
-                  </Link>
-                </li>
-                <li><hr className="dropdown-divider" /></li>
-                <li>
-                  <button 
-                    className="dropdown-item" 
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
-                    Logout
-                  </button>
-                </li>
-              </ul>
-            </div>
-          )}
-          
-          {/* For demo purposes only - button to toggle logged in state */}
-          <button 
-            className="btn btn-sm btn-secondary ms-2" 
-            onClick={toggleLoggedIn} 
-            style={{ fontSize: '0.7rem', padding: '2px 5px' }}
-          >
-            {isLoggedIn ? 'Demo: Logout' : 'Demo: Login'}
-          </button>
+          <div className="d-flex align-items-center">
+            {/* Login/Register buttons for non-logged in users */}
+            {!isLoggedIn ? (
+              <div className="login-buttons d-flex gap-2">
+                <button 
+                  className="btn btn-success btn-sm"
+                  onClick={handleDemoLogin}
+                >
+                  <FontAwesomeIcon icon={faUserGraduate} className="me-1" />
+                  Demo
+                </button>
+                <Link to="/login" className="btn btn-outline-primary btn-sm">Log In</Link>
+                <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
+              </div>
+            ) : (
+              <div className="dropdown">
+                <a 
+                  className="dropdown-toggle text-decoration-none d-flex align-items-center" 
+                  href="#" 
+                  role="button" 
+                  id="userDropdown" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                >
+                  <img 
+                    src={user.avatar} 
+                    alt="Profile" 
+                    className="rounded-circle me-2" 
+                    width="32" 
+                    height="32" 
+                  />
+                  <span className="user-name d-none d-md-inline">{user.name}</span>
+                </a>
+                <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                  <li>
+                    <Link className="dropdown-item" to="/dashboard">
+                      <FontAwesomeIcon icon={faGraduationCap} className="me-2" />
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/profile">
+                      <FontAwesomeIcon icon={faUser} className="me-2" />
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/settings">
+                      <FontAwesomeIcon icon={faCog} className="me-2" />
+                      Settings
+                    </Link>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>

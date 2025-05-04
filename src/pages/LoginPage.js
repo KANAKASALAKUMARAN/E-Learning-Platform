@@ -6,7 +6,7 @@ import {
   faFacebookF, 
   faApple 
 } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 import authService from '../services/api/authService';
 
 function LoginPage() {
@@ -66,19 +66,22 @@ function LoginPage() {
           password: formData.password
         });
         
-        // Store user data and token in localStorage
+        // Store token based on remember me preference
         if (formData.rememberMe) {
           localStorage.setItem('token', userData.token);
         } else {
           sessionStorage.setItem('token', userData.token);
         }
         
-        localStorage.setItem('currentUser', JSON.stringify({
-          id: userData._id,
-          name: userData.fullName,
-          email: userData.email,
-          role: userData.role
-        }));
+        // Store user data in localStorage, handling different possible response structures
+        const userToStore = {
+          id: userData._id || userData.id || userData.user?._id || userData.user?.id,
+          name: userData.fullName || userData.name || userData.user?.fullName || userData.user?.name,
+          email: userData.email || userData.user?.email,
+          role: userData.role || userData.user?.role
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(userToStore));
         
         // Redirect to dashboard
         navigate('/dashboard');
@@ -97,6 +100,38 @@ function LoginPage() {
     }
   };
 
+  const handleDemoLogin = async (e) => {
+    e.preventDefault();
+    
+    setIsLoading(true);
+    try {
+      console.log('Attempting demo login');
+      
+      // Use the dedicated demo login function from authService
+      try {
+        const { user, token } = authService.demoLogin();
+        
+        // Store token in localStorage (demo users are always remembered)
+        localStorage.setItem('token', token);
+        
+        // No need to transform user object as demoLogin already provides consistent structure
+        localStorage.setItem('currentUser', JSON.stringify(user));
+      } catch (apiError) {
+        console.log('Demo login failed:', apiError);
+        setErrors({ general: 'Demo login failed. Please try again.' });
+        return;
+      }
+      
+      // Redirect to dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Demo login error:', error);
+      setErrors({ general: 'Demo login failed. Please try again.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="container py-5">
       <div className="row justify-content-center">
@@ -106,6 +141,18 @@ function LoginPage() {
               <div className="auth-heading mb-4">
                 <h1 className="fw-bold">Welcome Back!</h1>
                 <p className="text-muted">Login to continue learning</p>
+              </div>
+              
+              {/* Demo Login Button */}
+              <div className="d-grid mb-4">
+                <button 
+                  className="btn btn-success" 
+                  onClick={handleDemoLogin}
+                  disabled={isLoading}
+                >
+                  <FontAwesomeIcon icon={faUserGraduate} className="me-2" />
+                  {isLoading ? 'Loading...' : 'Try Demo Login'}
+                </button>
               </div>
               
               {/* Social Login Options */}
