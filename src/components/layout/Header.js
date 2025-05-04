@@ -99,18 +99,6 @@ function Header() {
                 Courses
               </NavLink>
             </li>
-            {isLoggedIn && (
-              <li className="nav-item">
-                <NavLink 
-                  className={({ isActive }) => 
-                    isActive ? "nav-link active" : "nav-link"
-                  } 
-                  to="/dashboard"
-                >
-                  Dashboard
-                </NavLink>
-              </li>
-            )}
             <li className="nav-item">
               <NavLink 
                 className={({ isActive }) => 
@@ -147,14 +135,26 @@ function Header() {
                   data-bs-toggle="dropdown" 
                   aria-expanded="false"
                 >
-                  <img 
-                    src={user.avatar} 
-                    alt="Profile" 
-                    className="rounded-circle me-2" 
-                    width="32" 
-                    height="32" 
-                  />
-                  <span className="user-name d-none d-md-inline">{user.name}</span>
+                  <div className="d-flex align-items-center">
+                    {user.avatar ? (
+                      <img 
+                        src={user.avatar} 
+                        alt="Profile" 
+                        className="rounded-circle border" 
+                        width="32" 
+                        height="32" 
+                        style={{ objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                           style={{ width: '32px', height: '32px' }}>
+                        <FontAwesomeIcon icon={faUser} size="sm" />
+                      </div>
+                    )}
+                    <span className="user-name d-none d-md-inline ms-2 fw-medium text-dark">
+                      {user.name}
+                    </span>
+                  </div>
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
                   <li>
