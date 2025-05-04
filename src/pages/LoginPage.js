@@ -7,7 +7,7 @@ import {
   faApple 
 } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import authService from '../services/api/authService';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -60,32 +60,36 @@ function LoginPage() {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/api/users/login', {
+        console.log('Attempting to login with:', formData.email);
+        const userData = await authService.login({
           email: formData.email,
           password: formData.password
         });
         
         // Store user data and token in localStorage
         if (formData.rememberMe) {
-          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('token', userData.token);
         } else {
-          sessionStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('token', userData.token);
         }
         
         localStorage.setItem('currentUser', JSON.stringify({
-          id: response.data._id,
-          name: response.data.fullName,
-          email: response.data.email,
-          role: response.data.role
+          id: userData._id,
+          name: userData.fullName,
+          email: userData.email,
+          role: userData.role
         }));
         
         // Redirect to dashboard
         navigate('/dashboard');
       } catch (error) {
+        console.error('Login error:', error);
         let errorMessage = 'Login failed';
-        if (error.response && error.response.data) {
-          errorMessage = error.response.data.message;
+        
+        if (error.message) {
+          errorMessage = error.message;
         }
+        
         setErrors({ general: errorMessage });
       } finally {
         setIsLoading(false);

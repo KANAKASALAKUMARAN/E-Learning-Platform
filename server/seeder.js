@@ -8,8 +8,12 @@ const bcrypt = require('bcryptjs');
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/elearning')
+// Connect to MongoDB using the exact connection string
+const MONGODB_URI = 'mongodb://admin:admin123@localhost:27017/elearning?authSource=admin';
+
+console.log('Attempting to connect to MongoDB with exact connection string');
+
+mongoose.connect(MONGODB_URI)
   .then(() => console.log('MongoDB connected for seeding'))
   .catch(err => {
     console.error('MongoDB connection error:', err);

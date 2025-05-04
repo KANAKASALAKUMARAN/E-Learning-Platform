@@ -6,13 +6,14 @@ const API = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  timeout: 15000 // 15 seconds timeout
+  timeout: 15000, // 15 seconds timeout
+  withCredentials: false // Set to true if using cookies for authentication
 });
 
 // Add a request interceptor to include auth token in requests
 API.interceptors.request.use(
   (config) => {
-    console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`, config.params || {});
+    console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`, config.baseURL);
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -37,6 +38,10 @@ API.interceptors.response.use(
     // Check if error is due to server not running
     if (!error.response) {
       console.error('Network error - server might be down or not reachable');
+      // Format a more user-friendly error
+      const connectionError = new Error('Server connection error. Please make sure the backend server is running on port 5000.');
+      connectionError.isConnectionError = true;
+      return Promise.reject(connectionError);
     }
     
     // Handle 401 Unauthorized errors (token expired or invalid)

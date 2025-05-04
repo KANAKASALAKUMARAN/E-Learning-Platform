@@ -4,18 +4,26 @@ const bcrypt = require('bcryptjs');
 const UserSchema = new mongoose.Schema({
   fullName: {
     type: String,
-    required: true
+    required: [true, 'Full name is required'],
+    trim: true
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
-    lowercase: true
+    lowercase: true,
+    trim: true,
+    validate: {
+      validator: function(value) {
+        return /^\S+@\S+\.\S+$/.test(value);
+      },
+      message: 'Please enter a valid email address'
+    }
   },
   password: {
     type: String,
-    required: true,
-    minlength: 8
+    required: [true, 'Password is required'],
+    minlength: [8, 'Password must be at least 8 characters long']
   },
   role: {
     type: String,
@@ -68,13 +76,22 @@ UserSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
-    next(error);
+    console.error('Error hashing password:', error);
+    next(new Error('Failed to process password'));
   }
 });
 
 // Compare password method
 UserSchema.methods.comparePassword = async function(password) {
-  return await bcrypt.compare(password, this.password);
+  try {
+    return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    console.error('Error comparing passwords:', error);
+    return false;
+  }
 };
+
+// Create an index for email to ensure uniqueness
+UserSchema.index({ email: 1 }, { unique: true });
 
 module.exports = mongoose.model('User', UserSchema);

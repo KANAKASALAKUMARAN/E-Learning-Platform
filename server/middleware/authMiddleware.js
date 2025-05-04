@@ -29,9 +29,11 @@ const protect = async (req, res, next) => {
       
       next();
     } catch (error) {
-      return res.status(401).json({ message: 'Not authorized, invalid token' });
+      console.error('Token verification error:', error.message);
+      return res.status(401).json({ message: 'Not authorized, invalid token', error: error.message });
     }
   } catch (error) {
+    console.error('Auth middleware error:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
