@@ -35,6 +35,68 @@ Before running the project, make sure you have the following installed:
 - npm (v6 or later)
 - MongoDB (local installation or MongoDB Atlas account)
 
+## MongoDB Setup
+
+### Option 1: Local MongoDB Installation
+
+1. **Download and Install MongoDB Community Server**
+   - Visit [MongoDB Download Center](https://www.mongodb.com/try/download/community)
+   - Select your operating system (Windows/macOS/Linux)
+   - Download and run the installer
+   - Follow the installation wizard
+   - Choose "Complete" installation type
+   - Select "Install MongoDB as a Service" option
+
+2. **Verify Installation**
+   - Open Command Prompt or PowerShell
+   - Run `mongod --version` to verify MongoDB server is installed
+   - Run `mongo --version` to verify MongoDB shell is installed
+
+3. **Create Admin User**
+   - Open MongoDB Shell by typing `mongosh` in Command Prompt
+   - Switch to admin database: `use admin`
+   - Create admin user:
+   ```
+   db.createUser({
+     user: "admin",
+     pwd: "admin123",
+     roles: [{ role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase"]
+   })
+   ```
+   - Exit the shell by typing `exit`
+
+4. **Create the E-Learning Database**
+   - Open MongoDB Shell: `mongosh -u admin -p admin123 --authenticationDatabase admin`
+   - Create and switch to elearning database: `use elearning`
+   - The database will be created when you first insert data into it via the seeder script
+
+### Option 2: MongoDB Atlas (Cloud)
+
+1. **Create MongoDB Atlas Account**
+   - Sign up at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)
+   - Create a new cluster (free tier is available)
+
+2. **Set Up Network Access**
+   - In Atlas dashboard, go to Network Access
+   - Add your current IP address or allow access from anywhere for development
+
+3. **Create Database User**
+   - Go to Database Access
+   - Add a new database user with password authentication
+   - Assign read/write permissions
+
+4. **Get Connection String**
+   - Go to Clusters and click "Connect"
+   - Choose "Connect your application"
+   - Copy the connection string
+   - Replace `<username>`, `<password>`, and `<dbname>` with your credentials and "elearning" as database name
+
+5. **Update Your .env File**
+   - Use the connection string from Atlas in your .env file:
+   ```
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/elearning?retryWrites=true&w=majority
+   ```
+
 ## Installation and Setup
 
 ### Step 1: Clone the Repository
