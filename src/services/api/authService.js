@@ -33,6 +33,73 @@ const AuthService = {
   },
   
   /**
+   * Demo login - creates a demo user session
+   * @returns {Object} Demo user data and token
+   */
+  demoLogin: () => {
+    // Create demo token
+    const demoToken = 'demo-token-' + Math.random().toString(36).substring(2);
+    
+    // Create demo user
+    const demoUser = {
+      _id: 'demo-user',
+      name: 'Demo User',
+      email: 'demo@example.com',
+      role: 'student',
+      enrolledCourses: [
+        {
+          _id: '1',
+          title: 'Introduction to Data Science',
+          description: 'Learn the basics of data science and analysis',
+          progress: 100,
+          instructor: { name: 'John Smith' },
+          image: '/assets/images/course1.jpg',
+          completedAt: '2025-04-28'
+        },
+        {
+          _id: '2',
+          title: 'Data Analysis with Python',
+          description: 'Master data analysis using Python libraries',
+          progress: 65,
+          instructor: { name: 'Sarah Johnson' },
+          image: '/assets/images/course2.jpg',
+          lastAccessed: '2025-05-01'
+        },
+        {
+          _id: '3',
+          title: 'Machine Learning Fundamentals',
+          description: 'Introduction to machine learning concepts',
+          progress: 0,
+          instructor: { name: 'David Chen' },
+          image: '/assets/images/course3.jpg'
+        }
+      ],
+      achievements: [
+        { 
+          id: 1, 
+          title: 'First Course Completed', 
+          description: 'You completed your first course!',
+          date: '2025-04-28',
+          icon: 'faTrophy'
+        },
+        {
+          id: 2,
+          title: 'Learning Streak',
+          description: "You've been learning for 7 consecutive days",
+          date: '2025-04-20',
+          icon: 'faMedal'
+        }
+      ]
+    };
+    
+    // Store token and user in localStorage
+    localStorage.setItem('token', demoToken);
+    localStorage.setItem('currentUser', JSON.stringify(demoUser));
+    
+    return { user: demoUser, token: demoToken };
+  },
+  
+  /**
    * Get user profile
    * @returns {Promise} Promise with user profile data
    */

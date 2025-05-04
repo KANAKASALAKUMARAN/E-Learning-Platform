@@ -12,9 +12,6 @@ function CourseCard({ course, viewMode }) {
   // Get instructor name (handles both string and object formats)
   const instructorName = course.instructor?.name || course.instructor;
   
-  // Get instructor image (handles both string and object formats)
-  const instructorImage = course.instructor?.image || course.instructorImage;
-  
   // Calculate discount percentage
   const discountPercentage = course.originalPrice 
     ? Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100) 
@@ -26,29 +23,17 @@ function CourseCard({ course, viewMode }) {
   return (
     <Card className={`course-card shadow-sm ${isListView ? 'list-card' : 'h-100'}`}>
       <div className={isListView ? "d-flex" : ""}>
-        <div className={`position-relative ${isListView ? 'list-card-img-wrapper' : ''}`} 
-             style={isListView ? {flex: '0 0 240px'} : {}}>
-          <Card.Img 
-            variant="top" 
-            src={course.image || '/assets/images/course-placeholder.jpg'} 
-            alt={course.title}
-            className={`course-thumbnail ${isListView ? 'h-100' : ''}`}
-            style={isListView ? {objectFit: 'cover', borderTopRightRadius: 0, borderBottomLeftRadius: 'calc(0.25rem - 1px)', height: '100%'} : {}}
-            onError={(e) => {
-              e.target.src = '/assets/images/course-placeholder.jpg';
-            }}
-          />
+        {/* Course badge now appears at the top of the card body */}
+        <Card.Body className="d-flex flex-column">
           {course.badge && (
             <Badge 
               bg="primary" 
-              className="position-absolute top-0 start-0 m-3 py-2 px-3"
+              className="align-self-start mb-2 py-2 px-3"
             >
               {course.badge}
             </Badge>
           )}
-        </div>
-        
-        <Card.Body className="d-flex flex-column">
+          
           <div className="d-flex justify-content-between mb-2">
             <Badge bg="light" text="dark" className="px-2 py-1">
               {course.category}
@@ -74,16 +59,7 @@ function CourseCard({ course, viewMode }) {
           </Card.Text>
           
           <div className="d-flex align-items-center mb-3">
-            <img 
-              src={instructorImage || '/assets/images/avatar-placeholder.jpg'} 
-              alt={instructorName}
-              className="rounded-circle me-2"
-              width="30"
-              height="30"
-              onError={(e) => {
-                e.target.src = '/assets/images/avatar-placeholder.jpg';
-              }}
-            />
+            <FontAwesomeIcon icon={faUser} className="text-muted me-2" />
             <span className="instructor-name">{instructorName}</span>
           </div>
           
@@ -135,7 +111,6 @@ CourseCard.propTypes = {
     _id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    image: PropTypes.string,
     category: PropTypes.string.isRequired,
     badge: PropTypes.string,
     rating: PropTypes.number,
@@ -144,7 +119,6 @@ CourseCard.propTypes = {
       PropTypes.string,
       PropTypes.object
     ]).isRequired,
-    instructorImage: PropTypes.string,
     duration: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     originalPrice: PropTypes.number,

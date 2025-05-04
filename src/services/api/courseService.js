@@ -1,17 +1,16 @@
 import API from './apiService';
 import localCourseData from '../../data/courseData';
 
-// Enhanced cache with better performance
+// Simpler cache with better performance
 const courseCache = {
   allCourses: null,
   categories: null,
-  filteredResults: new Map(),
   timestamp: null,
-  CACHE_DURATION: 3 * 60 * 1000 // 3 minutes
+  CACHE_DURATION: 1 * 60 * 1000 // 1 minute (reduced from 3 minutes)
 };
 
 /**
- * Course service for handling course operations with optimized performance
+ * Course service for handling course operations
  */
 const CourseService = {
   /**
@@ -21,47 +20,30 @@ const CourseService = {
    */
   getCourses: async (filters = {}) => {
     try {
-      const filterKey = JSON.stringify(filters);
       const hasFilters = Object.keys(filters).some(k => filters[k]);
       
-      // Check if we have a cached result for this exact filter
-      if (courseCache.timestamp && 
+      // Check if we have a valid cached result
+      if (!hasFilters && 
+          courseCache.allCourses && 
+          courseCache.timestamp && 
           Date.now() - courseCache.timestamp < courseCache.CACHE_DURATION) {
-        
-        // Return cached filtered results if available
-        if (hasFilters && courseCache.filteredResults.has(filterKey)) {
-          return courseCache.filteredResults.get(filterKey);
-        }
-        
-        // Return all courses if no filters and we have cached all courses
-        if (!hasFilters && courseCache.allCourses) {
-          return courseCache.allCourses;
-        }
+        return courseCache.allCourses;
       }
 
-      // Set a short timeout for faster failures
+      // Shorter timeout for faster failures (reduced from 8 seconds to 4)
       const response = await API.get('/courses', { 
         params: filters,
-        timeout: 8000 // 8 seconds timeout for faster failure/recovery
+        timeout: 4000 // 4 seconds timeout for faster failure/recovery
       });
 
-      // Ensure we have data
-      if (!response || !response.data) {
-        throw new Error('No data received from server');
-      }
-
-      // Update cache
-      const now = Date.now();
-      if (!hasFilters) {
+      // Update cache for unfiltered results
+      if (!hasFilters && response && response.data) {
         courseCache.allCourses = response.data;
-        courseCache.timestamp = now;
-      } else {
-        courseCache.filteredResults.set(filterKey, response.data);
+        courseCache.timestamp = Date.now();
       }
 
       return response.data;
     } catch (error) {
-      // Improved error handling with fallback
       console.error('CourseService error:', error);
       
       // Return fallback data for specific error scenarios
@@ -69,36 +51,12 @@ const CourseService = {
         return filterLocalCourses(filters);
       }
       
-      throw error.response?.data || { message: 'Failed to load courses. Please try again.' };
+      throw error;
     }
   },
   
   /**
-   * Filter local course data
-   * Private helper function
-   */
-  filterLocalCourses: (filters = {}) => {
-    const { category, level, search } = filters;
-    
-    return localCourseData
-      .filter(course => {
-        if (category && course.category !== category) return false;
-        if (level && course.level !== level) return false;
-        if (search) {
-          const term = search.toLowerCase();
-          return course.title.toLowerCase().includes(term) || 
-                 course.description.toLowerCase().includes(term);
-        }
-        return true;
-      })
-      .map(course => ({
-        ...course,
-        _id: `local-${course.id}`
-      }));
-  },
-  
-  /**
-   * Get course categories with caching
+   * Get course categories with simpler caching
    * @returns {Promise} Promise with categories data
    */
   getCategories: async () => {
@@ -111,18 +69,17 @@ const CourseService = {
       }
 
       const response = await API.get('/courses/categories', {
-        timeout: 5000 // 5 seconds timeout
+        timeout: 3000 // 3 seconds timeout (reduced from 5)
       });
 
-      if (!response || !response.data) {
-        throw new Error('No categories data received');
+      if (response && response.data) {
+        // Cache the categories
+        courseCache.categories = response.data;
+        courseCache.timestamp = Date.now();
+        return response.data;
       }
-
-      // Cache the categories
-      courseCache.categories = response.data;
-      courseCache.timestamp = courseCache.timestamp || Date.now();
       
-      return response.data;
+      throw new Error('No categories data received');
     } catch (error) {
       console.error('Error fetching categories:', error);
       
@@ -236,14 +193,29 @@ const CourseService = {
   clearCache: () => {
     courseCache.allCourses = null;
     courseCache.categories = null;
-    courseCache.filteredResults.clear();
     courseCache.timestamp = null;
   }
 };
 
 // Helper function for local course filtering
 const filterLocalCourses = (filters = {}) => {
-  return CourseService.filterLocalCourses(filters);
+  const { category, level, search } = filters;
+  
+  return localCourseData
+    .filter(course => {
+      if (category && course.category !== category) return false;
+      if (level && course.level !== level) return false;
+      if (search) {
+        const term = search.toLowerCase();
+        return course.title.toLowerCase().includes(term) || 
+               course.description.toLowerCase().includes(term);
+      }
+      return true;
+    })
+    .map(course => ({
+      ...course,
+      _id: `local-${course.id}`
+    }));
 };
 
 export default CourseService;
