@@ -3,7 +3,7 @@ import CourseCard from '../components/courses/CourseCard';
 import CourseFilters from '../components/courses/CourseFilters';
 import CourseService from '../services/api/courseService';
 import localCourseData from '../data/courseData';
-import { Spinner, Alert } from 'react-bootstrap';
+import { Spinner, Alert, Button } from 'react-bootstrap';
 
 function CoursesPage() {
   // State for course data and UI
@@ -18,12 +18,14 @@ function CoursesPage() {
     level: '',
     search: ''
   });
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   
   // Refs to handle API calls and prevent race conditions
   const isMounted = useRef(true);
   const lastFetchTimestamp = useRef(0);
   const fetchRequestId = useRef(0);
   const currentCoursesRef = useRef([]);
+  const initialLoadComplete = useRef(false);
   
   // Pre-process local course data
   const localCategoriesData = useMemo(() => {
@@ -94,9 +96,14 @@ function CoursesPage() {
       currentCoursesRef.current = filteredCourses || [];
       
       // Batch these state updates to avoid multiple renders
-      setCourses(currentCoursesRef.current);
-      setUsingLocalData(false);
-      setError(null);
+      if (isMounted.current) {
+        // Immediately set courses to prevent flickering
+        setCourses(currentCoursesRef.current);
+        
+        // These updates don't cause visual flicker, so they can be separate
+        setUsingLocalData(false);
+        setError(null);
+      }
     } catch (error) {
       // Prevent race conditions
       if (requestId !== fetchRequestId.current || !isMounted.current) {
@@ -109,53 +116,55 @@ function CoursesPage() {
       currentCoursesRef.current = filterLocalCourses;
       
       // Batch these state updates
-      setCourses(currentCoursesRef.current);
-      setUsingLocalData(true);
+      if (isMounted.current) {
+        setCourses(currentCoursesRef.current);
+        setUsingLocalData(true);
+      }
     } finally {
       if (isMounted.current) {
-        // Delay clearing the loading state slightly to prevent flickering
-        setTimeout(() => {
-          if (isMounted.current) {
-            setLoading(false);
-            setInitialLoading(false);
-          }
-        }, 100);
-      }
-    }
-  };
-
-  // Fetch categories (optimized)
-  const fetchCategories = async () => {
-    try {
-      const fetchedCategories = await CourseService.getCategories();
-      if (isMounted.current) {
-        setCategories(fetchedCategories);
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      if (isMounted.current) {
-        setCategories(localCategoriesData);
+        // Use RAF to ensure loading state changes happen after rendering
+        requestAnimationFrame(() => {
+          // Then use a timeout to delay it a bit more for smoother transitions
+          setTimeout(() => {
+            if (isMounted.current) {
+              setLoading(false);
+              setInitialLoading(false);
+            }
+          }, 300);
+        });
       }
     }
   };
 
   // Load data on component mount (only once)
   useEffect(() => {
+    // Skip if already loaded
+    if (initialLoadComplete.current) return;
+    
+    // Mark as loaded to prevent duplicate loading
+    initialLoadComplete.current = true;
+    
     // Reset refs
     isMounted.current = true;
     fetchRequestId.current = 0;
     currentCoursesRef.current = [];
     
-    // Load initial data and fallback immediately to local data if API fails
-    const initializeData = async () => {
-      // Start API calls in parallel for better performance
-      const coursesPromise = CourseService.getCourses({}).catch(() => null);
-      const categoriesPromise = CourseService.getCategories().catch(() => null);
+    // First, set initial data immediately to reduce perceived loading time
+    setCourses(preparedLocalCourseData);
+    setCategories(localCategoriesData);
+    
+    // Then load data from API with timeout to prevent immediate loading state transitions
+    setTimeout(async () => {
+      if (!isMounted.current) return;
       
       try {
-        // Wait for both API calls with a timeout
+        // Start API calls in parallel for better performance
+        const coursesPromise = CourseService.getCourses({}).catch(() => null);
+        const categoriesPromise = CourseService.getCategories().catch(() => null);
+        
+        // Wait for both API calls
         const results = await Promise.allSettled([
-          coursesPromise,
+          coursesPromise, 
           categoriesPromise
         ]);
         
@@ -164,41 +173,29 @@ function CoursesPage() {
         // Handle courses result
         if (results[0].status === 'fulfilled' && results[0].value) {
           currentCoursesRef.current = results[0].value;
-          setCourses(currentCoursesRef.current);
+          setCourses(results[0].value);
           setUsingLocalData(false);
-        } else {
-          currentCoursesRef.current = preparedLocalCourseData;
-          setCourses(currentCoursesRef.current);
-          setUsingLocalData(true);
         }
         
         // Handle categories result
         if (results[1].status === 'fulfilled' && results[1].value) {
           setCategories(results[1].value);
-        } else {
-          setCategories(localCategoriesData);
         }
       } catch (error) {
         console.error('Error initializing data:', error);
-        if (isMounted.current) {
-          currentCoursesRef.current = preparedLocalCourseData;
-          setCourses(currentCoursesRef.current);
-          setCategories(localCategoriesData);
-          setUsingLocalData(true);
-        }
       } finally {
         if (isMounted.current) {
-          // Small delay to ensure smoother transition
-          setTimeout(() => {
-            if (isMounted.current) {
-              setInitialLoading(false);
-            }
-          }, 100);
+          // Use RAF for smoother transitions
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              if (isMounted.current) {
+                setInitialLoading(false);
+              }
+            }, 300);
+          });
         }
       }
-    };
-    
-    initializeData();
+    }, 100);
     
     // Cleanup function to prevent state updates after unmount
     return () => {
@@ -209,13 +206,15 @@ function CoursesPage() {
   // Handle filter changes (with debouncing)
   useEffect(() => {
     // Skip initial render where filters are empty
-    if (!initialLoading && Object.values(filters).some(v => v !== '')) {
-      const timerId = setTimeout(() => {
+    if (initialLoading) return;
+    
+    const timerId = setTimeout(() => {
+      if (isMounted.current) {
         fetchCourses(filters);
-      }, 400); // 400ms debounce
-      
-      return () => clearTimeout(timerId);
-    }
+      }
+    }, 400); // 400ms debounce
+    
+    return () => clearTimeout(timerId);
   }, [filters, initialLoading]);
 
   // Update filters handler
@@ -227,9 +226,15 @@ function CoursesPage() {
       return { ...prev, ...newFilters };
     });
   };
+  
+  // Toggle view mode
+  const toggleViewMode = (mode) => {
+    setViewMode(mode);
+  };
 
-  const renderCoursesList = () => {
-    if (courses.length === 0) {
+  // Main render function for courses list - memoized to prevent re-renders
+  const renderCoursesList = useMemo(() => {
+    if (!courses || courses.length === 0) {
       return (
         <Alert variant="info">
           <i className="fas fa-info-circle me-2"></i>
@@ -239,18 +244,39 @@ function CoursesPage() {
     }
 
     return (
-      <div className="row g-4">
+      <div className={viewMode === 'grid' ? "row g-4" : "list-view"}>
         {courses.map(course => (
-          <div className="col-md-6 col-xl-4" key={course._id || course.id}>
-            <CourseCard course={course} />
+          <div 
+            className={viewMode === 'grid' ? "col-md-6 col-xl-4" : "mb-4"} 
+            key={course._id || course.id || `course-${Math.random()}`}
+          >
+            <CourseCard course={course} viewMode={viewMode} />
           </div>
         ))}
       </div>
     );
-  };
+  }, [courses, viewMode]);
+  
+  // Fixed position loading indicator
+  const loadingIndicator = useMemo(() => {
+    if (loading && !initialLoading) {
+      return (
+        <div className="loading-overlay position-fixed top-0 start-0 end-0 d-flex justify-content-center" 
+             style={{zIndex: 1050, paddingTop: '15px'}}>
+          <div className="bg-white py-1 px-3 rounded shadow d-flex align-items-center">
+            <Spinner animation="border" size="sm" variant="primary" />
+            <span className="ms-2">Loading...</span>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }, [loading, initialLoading]);
 
   return (
     <div className="container py-5">
+      {loadingIndicator}
+      
       <div className="row">
         {/* Filters sidebar */}
         <div className="col-lg-3 mb-4">
@@ -274,6 +300,21 @@ function CoursesPage() {
         <div className="col-lg-9">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1 className="mb-0">All Courses</h1>
+            <div className="view-options">
+              <Button 
+                variant={viewMode === 'grid' ? "primary" : "outline-primary"} 
+                className="me-2"
+                onClick={() => toggleViewMode('grid')}
+              >
+                <i className="fas fa-th-large"></i>
+              </Button>
+              <Button 
+                variant={viewMode === 'list' ? "primary" : "outline-primary"}
+                onClick={() => toggleViewMode('list')}
+              >
+                <i className="fas fa-list"></i>
+              </Button>
+            </div>
           </div>
           
           {initialLoading ? (
@@ -282,11 +323,6 @@ function CoursesPage() {
                 <span className="visually-hidden">Loading courses...</span>
               </Spinner>
               <p className="mt-3">Loading courses...</p>
-            </div>
-          ) : loading && courses.length === 0 ? (
-            <div className="d-flex justify-content-center my-4">
-              <Spinner animation="border" size="sm" variant="primary" />
-              <span className="ms-2">Loading results...</span>
             </div>
           ) : error ? (
             <Alert variant="danger">
@@ -300,15 +336,7 @@ function CoursesPage() {
               </button>
             </Alert>
           ) : (
-            <>
-              {loading && (
-                <div className="loading-indicator d-flex justify-content-center mb-3">
-                  <Spinner animation="border" size="sm" variant="primary" />
-                  <span className="ms-2">Updating...</span>
-                </div>
-              )}
-              {renderCoursesList()}
-            </>
+            renderCoursesList
           )}
         </div>
       </div>
