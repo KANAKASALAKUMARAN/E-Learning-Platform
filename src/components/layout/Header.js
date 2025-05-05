@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -9,7 +9,10 @@ import {
   faGraduationCap,
   faTrophy,
   faBook,
-  faUserGraduate
+  faUserGraduate,
+  faBell,
+  faShoppingCart,
+  faHeart
 } from '@fortawesome/free-solid-svg-icons';
 import AuthService from '../../services/api/authService';
 
@@ -20,8 +23,30 @@ function Header() {
     name: 'User Name',
     avatar: '/assets/images/avatar-placeholder.jpg'
   });
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchActive, setSearchActive] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef(null);
   
   const navigate = useNavigate();
+  
+  // Handle scroll effect for header
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      if (scrollPosition > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   
   useEffect(() => {
     // Check if user is logged in
@@ -37,6 +62,13 @@ function Header() {
       setIsLoggedIn(false);
     }
   }, []);
+
+  // Focus search input when search is active
+  useEffect(() => {
+    if (searchActive && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchActive]);
   
   const handleLogout = () => {
     localStorage.removeItem('currentUser');
@@ -60,135 +92,293 @@ function Header() {
     // Redirect to dashboard
     navigate('/dashboard');
   };
+  
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const toggleSearch = () => {
+    setSearchActive(!searchActive);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/courses?search=${encodeURIComponent(searchQuery)}`);
+      setSearchActive(false);
+      setSearchQuery('');
+    }
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-      <div className="container">
-        <Link className="navbar-brand fw-bold" to="/">
-          <span className="text-primary">Learn</span>Hub
-        </Link>
-        
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <NavLink 
-                className={({ isActive }) => 
-                  isActive ? "nav-link active" : "nav-link"
-                } 
-                to="/"
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink 
-                className={({ isActive }) => 
-                  isActive ? "nav-link active" : "nav-link"
-                } 
-                to="/courses"
-              >
-                Courses
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink 
-                className={({ isActive }) => 
-                  isActive ? "nav-link active" : "nav-link"
-                } 
-                to="/about"
-              >
-                About Us
-              </NavLink>
-            </li>
-          </ul>
+    <header>
+      <nav className={`navbar navbar-expand-lg navbar-light fixed-top transition-all ${isScrolled ? 'bg-white shadow-sm py-2' : 'bg-transparent py-3'}`}>
+        <div className="container">
+          <Link className="navbar-brand fw-bold slide-in-left" to="/">
+            <div className="d-flex align-items-center">
+              <div className="brand-logo me-2 rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+                  style={{ width: '40px', height: '40px', overflow: 'hidden' }}>
+                <FontAwesomeIcon icon={faGraduationCap} className="text-white" />
+              </div>
+              <div>
+                <span className={`${isScrolled ? 'text-primary' : 'text-white'}`}>Learn</span>
+                <span className={isScrolled ? 'text-dark' : 'text-white'}>Hub</span>
+              </div>
+            </div>
+          </Link>
           
-          <div className="d-flex align-items-center">
-            {/* Login/Register buttons for non-logged in users */}
-            {!isLoggedIn ? (
-              <div className="login-buttons d-flex gap-2">
-                <button 
-                  className="btn btn-success btn-sm"
-                  onClick={handleDemoLogin}
-                >
-                  <FontAwesomeIcon icon={faUserGraduate} className="me-1" />
-                  Demo
-                </button>
-                <Link to="/login" className="btn btn-outline-primary btn-sm">Log In</Link>
-                <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
-              </div>
-            ) : (
-              <div className="dropdown">
-                <a 
-                  className="dropdown-toggle text-decoration-none d-flex align-items-center" 
-                  href="#" 
-                  role="button" 
-                  id="userDropdown" 
-                  data-bs-toggle="dropdown" 
-                  aria-expanded="false"
-                >
-                  <div className="d-flex align-items-center">
-                    {user.avatar ? (
-                      <img 
-                        src={user.avatar} 
-                        alt="Profile" 
-                        className="rounded-circle border" 
-                        width="32" 
-                        height="32" 
-                        style={{ objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                           style={{ width: '32px', height: '32px' }}>
-                        <FontAwesomeIcon icon={faUser} size="sm" />
-                      </div>
-                    )}
-                    <span className="user-name d-none d-md-inline ms-2 fw-medium text-dark">
-                      {user.name}
+          <button 
+            className={`navbar-toggler border-0 hover-shadow ${isScrolled ? '' : 'text-white'}`}
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav"
+            onClick={toggleMenu}
+            aria-expanded={menuOpen}
+          >
+            <span className={`navbar-toggler-icon ${isScrolled ? '' : 'text-white'}`}></span>
+          </button>
+          
+          <div className={`collapse navbar-collapse ${menuOpen ? 'show' : ''}`} id="navbarNav">
+            <ul className="navbar-nav mx-auto">
+              {[
+                { path: '/', label: 'Home' },
+                { path: '/courses', label: 'Courses' },
+                { path: '/about-us', label: 'About Us' },
+                { path: '/contact', label: 'Contact' }
+              ].map((nav, index) => (
+                <li className="nav-item fade-in" style={{animationDelay: `${0.1 * (index + 1)}s`}} key={nav.path}>
+                  <NavLink 
+                    className={({ isActive }) => 
+                      `nav-link position-relative transition-all px-3 mx-1 ${isActive ? 'active fw-bold' : ''} ${isScrolled ? '' : 'text-white'}`
+                    } 
+                    to={nav.path}
+                  >
+                    {nav.label}
+                    <span className="position-absolute bottom-0 start-50 translate-middle-x w-0 height-2px bg-primary transition-all" 
+                          style={{ 
+                            height: '2px', 
+                            transition: 'width 0.3s ease', 
+                            width: '0%'
+                          }}>
                     </span>
-                  </div>
-                </a>
-                <ul className="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-                  <li>
-                    <Link className="dropdown-item" to="/dashboard">
-                      <FontAwesomeIcon icon={faGraduationCap} className="me-2" />
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/profile">
-                      <FontAwesomeIcon icon={faUser} className="me-2" />
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="/settings">
-                      <FontAwesomeIcon icon={faCog} className="me-2" />
-                      Settings
-                    </Link>
-                  </li>
-                  <li><hr className="dropdown-divider" /></li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
-                      Logout
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+            
+            <div className="d-flex align-items-center gap-3 slide-in-right">
+              {/* Search button and form */}
+              <div className={`search-container position-relative ${searchActive ? 'active' : ''}`}>
+                <button 
+                  className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center transition-all ${
+                    isScrolled ? 'btn-light' : 'btn-outline-light'
+                  } ${searchActive ? 'd-none' : ''}`}
+                  onClick={toggleSearch}
+                  style={{ width: '38px', height: '38px' }}
+                >
+                  <FontAwesomeIcon icon={faSearch} className={isScrolled ? 'text-primary' : 'text-white'} />
+                </button>
+                
+                <form 
+                  className={`search-form position-absolute end-0 bg-white rounded-pill shadow transition-all ${
+                    searchActive ? 'active scale-in' : 'opacity-0'
+                  }`} 
+                  onSubmit={handleSearch}
+                  style={{ 
+                    top: 0,
+                    width: searchActive ? '280px' : '50px',
+                    overflow: 'hidden'
+                  }}
+                >
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      ref={searchInputRef}
+                      className="form-control border-0 shadow-none"
+                      placeholder="Search courses..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button className="btn btn-link text-primary" type="submit">
+                      <FontAwesomeIcon icon={faSearch} />
                     </button>
-                  </li>
-                </ul>
+                    <button 
+                      className="btn btn-link text-muted" 
+                      type="button"
+                      onClick={() => {
+                        setSearchActive(false);
+                        setSearchQuery('');
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                </form>
               </div>
-            )}
+              
+              {/* Notification and Wishlist for logged in users */}
+              {isLoggedIn && (
+                <>
+                  <div className="position-relative mx-1">
+                    <button 
+                      className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
+                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                      }`}
+                      style={{ width: '38px', height: '38px' }}
+                    >
+                      <FontAwesomeIcon icon={faBell} className={isScrolled ? 'text-primary' : 'text-white'} />
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        2
+                      </span>
+                    </button>
+                  </div>
+                  
+                  <div className="position-relative mx-1">
+                    <Link 
+                      to="/wishlist"
+                      className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
+                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                      }`}
+                      style={{ width: '38px', height: '38px' }}
+                    >
+                      <FontAwesomeIcon icon={faHeart} className={isScrolled ? 'text-primary' : 'text-white'} />
+                    </Link>
+                  </div>
+                  
+                  <div className="position-relative mx-1">
+                    <Link 
+                      to="/cart"
+                      className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
+                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                      }`}
+                      style={{ width: '38px', height: '38px' }}
+                    >
+                      <FontAwesomeIcon icon={faShoppingCart} className={isScrolled ? 'text-primary' : 'text-white'} />
+                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
+                        3
+                      </span>
+                    </Link>
+                  </div>
+                </>
+              )}
+              
+              {/* Login/Register buttons for non-logged in users */}
+              {!isLoggedIn ? (
+                <div className="login-buttons d-flex gap-2">
+                  <button 
+                    className="btn btn-animated btn-success btn-sm rounded-pill hover-lift"
+                    onClick={handleDemoLogin}
+                  >
+                    <FontAwesomeIcon icon={faUserGraduate} className="me-1" />
+                    Demo
+                  </button>
+                  <Link to="/login" className={`btn btn-animated ${isScrolled ? 'btn-outline-primary' : 'btn-outline-light'} btn-sm rounded-pill hover-lift`}>Log In</Link>
+                  <Link to="/signup" className="btn btn-animated btn-primary btn-sm rounded-pill hover-lift">Sign Up</Link>
+                </div>
+              ) : (
+                <div className="dropdown">
+                  <a 
+                    className="dropdown-toggle text-decoration-none d-flex align-items-center hover-lift" 
+                    href="#" 
+                    role="button" 
+                    id="userDropdown" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false"
+                  >
+                    <div className="d-flex align-items-center">
+                      {user.avatar ? (
+                        <div className="img-hover-zoom rounded-circle overflow-hidden border border-2 shadow-sm" style={{ width: '38px', height: '38px' }}>
+                          <img 
+                            src={user.avatar} 
+                            alt="Profile" 
+                            className="w-100 h-100" 
+                            style={{ objectFit: 'cover' }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center transition-all hover-scale"
+                             style={{ width: '38px', height: '38px' }}>
+                          <FontAwesomeIcon icon={faUser} size="sm" />
+                        </div>
+                      )}
+                      <span className={`user-name d-none d-md-inline ms-2 fw-medium ${isScrolled ? 'text-dark' : 'text-white'}`}>
+                        {user.name}
+                      </span>
+                    </div>
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-end shadow border-0 scale-in" aria-labelledby="userDropdown" style={{ minWidth: '220px' }}>
+                    <li className="px-3 py-2 d-flex align-items-center border-bottom">
+                      <div className="rounded-circle overflow-hidden me-2" style={{ width: '32px', height: '32px' }}>
+                        <img src={user.avatar} alt="User" className="w-100 h-100" style={{ objectFit: 'cover' }} />
+                      </div>
+                      <div>
+                        <div className="fw-bold">{user.name}</div>
+                        <div className="text-muted small">Student</div>
+                      </div>
+                    </li>
+                    {[
+                      {to: '/dashboard', icon: faGraduationCap, text: 'My Dashboard', color: '#4a6bff'},
+                      {to: '/profile', icon: faUser, text: 'My Profile', color: '#00c16e'},
+                      {to: '/settings', icon: faCog, text: 'Account Settings', color: '#6a11cb'},
+                    ].map((item, i) => (
+                      <li key={item.to}>
+                        <Link 
+                          className="dropdown-item py-2 hover-bg transition-colors" 
+                          to={item.to}
+                          style={{animationDelay: `${0.05 * (i + 1)}s`}}
+                        >
+                          <div className="d-flex align-items-center">
+                            <div className="me-2 rounded-circle d-flex align-items-center justify-content-center" 
+                                style={{ width: '28px', height: '28px', backgroundColor: `${item.color}15` }}>
+                              <FontAwesomeIcon icon={item.icon} style={{ color: item.color }} />
+                            </div>
+                            {item.text}
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <button 
+                        className="dropdown-item py-2 hover-bg transition-colors" 
+                        onClick={handleLogout}
+                      >
+                        <div className="d-flex align-items-center">
+                          <div className="me-2 rounded-circle d-flex align-items-center justify-content-center" 
+                              style={{ width: '28px', height: '28px', backgroundColor: '#ff506915' }}>
+                            <FontAwesomeIcon icon={faSignOutAlt} className="text-danger" />
+                          </div>
+                          Logout
+                        </div>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+      
+      {/* Custom CSS for nav-link hover effects */}
+      <style jsx="true">{`
+        .navbar-nav .nav-link:hover span {
+          width: 100% !important;
+        }
+        
+        .navbar-nav .nav-link.active span {
+          width: 100% !important;
+        }
+        
+        .search-form.active {
+          z-index: 100;
+        }
+        
+        .dropdown-toggle::after {
+          display: none;
+        }
+      `}</style>
+    </header>
   );
 }
 
