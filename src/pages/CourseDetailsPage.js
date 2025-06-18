@@ -8,13 +8,17 @@ import {
   faSignal,
   faUsers,
   faCalendarAlt,
-  faUser
+  faUser,
+  faShoppingCart,
+  faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import CourseService from '../services/api/courseService';
 import AuthService from '../services/api/authService';
+import { useCart } from '../contexts/CartContext';
 
 function CourseDetailsPage() {
   const { id } = useParams();
+  const { addToCart, isInCart } = useCart();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,6 +26,8 @@ function CourseDetailsPage() {
   const [enrollmentSuccess, setEnrollmentSuccess] = useState(false);
   const [user] = useState(JSON.parse(localStorage.getItem('currentUser')));
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
+  const [cartMessage, setCartMessage] = useState('');
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -117,6 +123,37 @@ function CourseDetailsPage() {
     } finally {
       setEnrolling(false);
     }
+  };
+
+  const handleAddToCart = async () => {
+    if (!course) return;
+
+    if (isInCart(course._id || course.id)) {
+      setCartMessage('Course is already in your cart');
+      setTimeout(() => setCartMessage(''), 3000);
+      return;
+    }
+
+    setAddingToCart(true);
+    const result = addToCart({
+      id: course._id || course.id,
+      title: course.title,
+      instructor: course.instructor,
+      price: course.price || 0,
+      thumbnail: course.thumbnail || course.image,
+      level: course.level,
+      duration: course.duration,
+      rating: course.rating
+    });
+
+    if (result.success) {
+      setCartMessage('Course added to cart successfully!');
+    } else {
+      setCartMessage(result.message);
+    }
+
+    setTimeout(() => setCartMessage(''), 3000);
+    setAddingToCart(false);
   };
 
   // Render loading state
@@ -295,13 +332,42 @@ function CourseDetailsPage() {
                 </div>
               ) : (
                 <div className="d-grid gap-2">
-                  <button 
-                    className="btn btn-primary" 
+                  <button
+                    className="btn btn-primary btn-lg"
                     onClick={handleEnroll}
                     disabled={enrolling}
                   >
                     {enrolling ? 'Enrolling...' : 'Enroll Now'}
                   </button>
+
+                  <button
+                    className={`btn btn-outline-primary ${isInCart(course._id || course.id) ? 'btn-success' : ''}`}
+                    onClick={handleAddToCart}
+                    disabled={addingToCart || isInCart(course._id || course.id)}
+                  >
+                    {addingToCart ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Adding to Cart...
+                      </>
+                    ) : isInCart(course._id || course.id) ? (
+                      <>
+                        <FontAwesomeIcon icon={faCheck} className="me-2" />
+                        In Cart
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
+                        Add to Cart
+                      </>
+                    )}
+                  </button>
+
+                  {cartMessage && (
+                    <div className={`alert ${isInCart(course._id || course.id) ? 'alert-success' : 'alert-info'} small mt-2`}>
+                      {cartMessage}
+                    </div>
+                  )}
                 </div>
               )}
               

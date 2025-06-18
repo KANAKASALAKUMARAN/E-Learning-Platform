@@ -190,6 +190,7 @@ Choose one of the following options to set up MongoDB:
 6. **MongoDB Compass Connection**:
    - Open MongoDB Compass
    - **Connection string for MongoDB Compass**: `mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/`
+   - **Connection string for MongoDB Compass_1**: 'mongodb://admin:admin123@localhost:27017/elearning?authSource=admin'
 
 ### Database Schema Setup
 

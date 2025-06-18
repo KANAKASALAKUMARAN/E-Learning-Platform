@@ -346,42 +346,46 @@ const CourseFilters = ({ activeFilters, applyFilters, clearFilters }) => {
         </div>
         
         {/* Categories Filter */}
-        <Accordion defaultActiveKey="0" className="mb-3 fade-in">
-          <Accordion.Item eventKey="0" className="border-0 shadow-sm">
-            <Accordion.Header className="filter-header">
-              <FontAwesomeIcon icon={faTag} className="me-2 text-primary" />
-              Categories
-              {filters.categories.length > 0 && (
-                <Badge 
-                  bg="primary" 
-                  pill 
-                  className="ms-2 scale-in"
-                >
-                  {filters.categories.length}
-                </Badge>
-              )}
-            </Accordion.Header>
-            <Accordion.Body>
-              <div className="categories-grid">
-                {categories.map((category, index) => (
-                  <div 
-                    key={index}
-                    className={`category-pill scale-hover ${filters.categories.includes(category) ? 'active' : ''}`}
-                    onClick={() => handleCategoryToggle(category)}
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    {category}
-                    {filters.categories.includes(category) && (
-                      <span className="check-icon">
-                        <FontAwesomeIcon icon={faCheck} />
-                      </span>
-                    )}
-                  </div>
-                ))}
+        <div className="filter-section mb-4 fade-in">
+          <div className="filter-section-header d-flex align-items-center justify-content-between p-3 bg-white rounded-top border">
+            <div className="d-flex align-items-center">
+              <div className="filter-icon-container me-3 rounded-circle d-flex align-items-center justify-content-center"
+                   style={{ backgroundColor: 'var(--bs-primary)', width: '32px', height: '32px' }}>
+                <FontAwesomeIcon icon={faTag} className="text-white" style={{ fontSize: '0.8rem' }} />
               </div>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+              <h6 className="mb-0 fw-bold text-dark">Categories</h6>
+            </div>
+            {filters.categories.length > 0 && (
+              <Badge
+                bg="primary"
+                pill
+                className="scale-in px-2 py-1"
+                style={{ fontSize: '0.75rem' }}
+              >
+                {filters.categories.length}
+              </Badge>
+            )}
+          </div>
+          <div className="filter-section-body p-3 bg-white rounded-bottom border border-top-0">
+            <div className="categories-grid">
+              {categories.map((category, index) => (
+                <div
+                  key={index}
+                  className={`category-pill ${filters.categories.includes(category) ? 'active' : ''}`}
+                  onClick={() => handleCategoryToggle(category)}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <span className="category-text">{category}</span>
+                  {filters.categories.includes(category) && (
+                    <span className="check-icon">
+                      <FontAwesomeIcon icon={faCheck} />
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Level Filter */}
         <Accordion defaultActiveKey="0" className="mb-3 fade-in delay-1">
@@ -588,18 +592,40 @@ const CourseFilters = ({ activeFilters, applyFilters, clearFilters }) => {
           }
         }
         
+        /* Filter Sections */
+        .filter-section {
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+          transition: all 0.3s ease;
+        }
+
+        .filter-section:hover {
+          box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .filter-section-header {
+          background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+          border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .filter-icon-container {
+          box-shadow: 0 2px 8px rgba(var(--bs-primary-rgb), 0.2);
+        }
+
         /* Category Pills */
         .categories-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-          gap: 8px;
+          grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+          gap: 10px;
         }
-        
+
         .category-pill {
-          padding: 8px 12px;
-          border-radius: 20px;
-          background-color: #f1f1f1;
+          padding: 12px 16px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
           font-size: 0.85rem;
+          font-weight: 500;
           cursor: pointer;
           text-align: center;
           transition: all 0.3s ease;
@@ -608,6 +634,11 @@ const CourseFilters = ({ activeFilters, applyFilters, clearFilters }) => {
           animation: fadeInUp 0.5s ease forwards;
           opacity: 0;
           transform: translateY(10px);
+          border: 2px solid transparent;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
         }
         
         @keyframes fadeInUp {
@@ -618,27 +649,44 @@ const CourseFilters = ({ activeFilters, applyFilters, clearFilters }) => {
         }
         
         .category-pill:hover {
-          background-color: #e1e1e1;
-          transform: translateY(-2px);
+          background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+          transform: translateY(-3px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          border-color: rgba(var(--bs-primary-rgb), 0.3);
         }
-        
+
         .category-pill.active {
-          background-color: var(--bs-primary);
+          background: linear-gradient(135deg, var(--bs-primary) 0%, #4f46e5 100%);
           color: white;
+          border-color: var(--bs-primary);
+          box-shadow: 0 4px 16px rgba(var(--bs-primary-rgb), 0.3);
         }
-        
+
+        .category-pill .category-text {
+          flex: 1;
+          text-align: center;
+        }
+
         .category-pill .check-icon {
           position: absolute;
           top: 50%;
-          right: 10px;
+          right: 12px;
           transform: translateY(-50%);
-          font-size: 10px;
+          font-size: 11px;
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: all 0.3s ease;
+          background: rgba(255,255,255,0.2);
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        
+
         .category-pill.active .check-icon {
           opacity: 1;
+          transform: translateY(-50%) scale(1.1);
         }
         
         /* Level Badges */

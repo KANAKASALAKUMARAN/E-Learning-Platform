@@ -5,6 +5,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 // Context Providers
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { CartProvider } from './contexts/CartContext';
 
 // Layout Components
 import Header from './components/layout/Header';
@@ -21,6 +22,7 @@ import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ContactUsPage from './pages/ContactUsPage';
+import CartPage from './pages/CartPage';
 
 // Scroll reveal utility
 const ScrollToTop = () => {
@@ -94,6 +96,7 @@ function MainContent() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/cart" element={<CartPage />} />
               {/* Add more routes as needed */}
             </Routes>
           </div>
@@ -107,19 +110,21 @@ function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <Router
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true
-          }}
-        >
-          <ScrollToTop />
-          <div className="d-flex flex-column min-vh-100">
-            <Header />
-            <MainContent />
-            <Footer />
-          </div>
-        </Router>
+        <CartProvider>
+          <Router
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true
+            }}
+          >
+            <ScrollToTop />
+            <div className="d-flex flex-column min-vh-100">
+              <Header />
+              <MainContent />
+              <Footer />
+            </div>
+          </Router>
+        </CartProvider>
       </AuthProvider>
     </ThemeProvider>
   );

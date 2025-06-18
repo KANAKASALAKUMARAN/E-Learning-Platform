@@ -205,14 +205,25 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-/* Course Card Styles */
+/* Course Card Styles - Enhanced */
 .course-card {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  overflow: hidden;
 }
 
 .course-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.course-card .card-img-top {
+  transition: transform 0.5s ease;
+}
+
+.course-card:hover .card-img-top {
+  transform: scale(1.05);
 }
 
 /* Course Badge */
@@ -227,10 +238,29 @@ h1, h2, h3, h4, h5, h6 {
   object-fit: cover;
 }
 
-/* Course Filter Sidebar */
+/* Course Filter Sidebar - Enhanced */
 .filters {
   max-height: calc(100vh - 140px);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--bs-primary-rgb), 0.3) transparent;
+}
+
+.filters::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filters::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filters::-webkit-scrollbar-thumb {
+  background: rgba(var(--bs-primary-rgb), 0.3);
+  border-radius: 3px;
+}
+
+.filters::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--bs-primary-rgb), 0.5);
 }
 
 /* Course Details Page */

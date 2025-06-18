@@ -13,22 +13,34 @@ import {
   faHeart
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 import UserProfileDropdown from '../common/UserProfileDropdown';
 
 function Header() {
-  // Use authentication context
+  // Use authentication and cart contexts
   const { user, isAuthenticated, demoLogin } = useAuth();
+  const { cartCount } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [cartBounce, setCartBounce] = useState(false);
   const searchInputRef = useRef(null);
 
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Cart bounce effect when cart count changes
+  useEffect(() => {
+    if (cartCount > 0) {
+      setCartBounce(true);
+      const timer = setTimeout(() => setCartBounce(false), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [cartCount]);
+
   // Configuration for pages that should have dark navbar text
-  const darkNavbarPages = ['/courses', '/about-us', '/contact', '/login', '/signup', '/dashboard', '/profile', '/settings'];
+  const darkNavbarPages = ['/courses', '/about-us', '/contact', '/login', '/signup', '/dashboard', '/profile', '/settings', '/cart'];
 
   // Check if current page should have dark navbar
   const shouldUseDarkNavbar = darkNavbarPages.includes(location.pathname) || isScrolled;
@@ -191,14 +203,13 @@ function Header() {
                         shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                       }`}
                       style={{ width: '38px', height: '38px' }}
+                      title="Notifications"
                     >
                       <FontAwesomeIcon icon={faBell} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        2
-                      </span>
+                      {/* Notification badge will be shown only when there are actual notifications */}
                     </button>
                   </div>
-                  
+
                   <div className="position-relative mx-1">
                     <Link
                       to="/wishlist"
@@ -206,23 +217,27 @@ function Header() {
                         shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                       }`}
                       style={{ width: '38px', height: '38px' }}
+                      title="Wishlist"
                     >
                       <FontAwesomeIcon icon={faHeart} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
                     </Link>
                   </div>
-                  
+
                   <div className="position-relative mx-1">
                     <Link
                       to="/cart"
                       className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
                         shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
-                      }`}
+                      } ${cartBounce ? 'cart-bounce' : ''}`}
                       style={{ width: '38px', height: '38px' }}
+                      title={`Shopping Cart (${cartCount} items)`}
                     >
                       <FontAwesomeIcon icon={faShoppingCart} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-                        3
-                      </span>
+                      {cartCount > 0 && (
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary cart-badge">
+                          {cartCount > 99 ? '99+' : cartCount}
+                        </span>
+                      )}
                     </Link>
                   </div>
                 </>
@@ -269,6 +284,40 @@ function Header() {
         .navbar-nav .nav-link:active {
           outline: none !important;
           box-shadow: none !important;
+        }
+
+        /* Cart animations */
+        .cart-bounce {
+          animation: cartBounce 0.6s ease-in-out;
+        }
+
+        @keyframes cartBounce {
+          0%, 100% { transform: scale(1); }
+          25% { transform: scale(1.2); }
+          50% { transform: scale(0.95); }
+          75% { transform: scale(1.1); }
+        }
+
+        .cart-badge {
+          animation: badgePulse 0.3s ease-in-out;
+          font-size: 0.7rem;
+          min-width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+        }
+
+        @keyframes badgePulse {
+          0% { transform: scale(0.8); opacity: 0.8; }
+          50% { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Hover effects for cart */
+        .btn-icon:hover .cart-badge {
+          transform: scale(1.1);
         }
       `}</style>
     </header>
