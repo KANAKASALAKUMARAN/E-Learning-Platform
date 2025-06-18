@@ -13,6 +13,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import ProfilePictureUpload from '../components/common/ProfilePictureUpload';
 import { DEFAULT_AVATAR } from '../constants/images';
+import { getUserDisplayName, getUserRole, getWelcomeMessage } from '../utils/userUtils';
 
 function ProfilePage() {
   const [formData, setFormData] = useState({
@@ -32,6 +33,10 @@ function ProfilePage() {
 
   const navigate = useNavigate();
   const { user, updateProfile } = useAuth();
+
+  // Get consistent user display values
+  const displayName = getUserDisplayName(user, 'User');
+  const userRole = getUserRole(user, 'Student');
   
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -168,24 +173,24 @@ function ProfilePage() {
                   /* View Mode */
                   <div className="profile-view">
                     <div className="mb-4">
-                      <h3 className="fw-bold">{user.name}</h3>
+                      <h3 className="fw-bold">{displayName}</h3>
                       <p className="text-muted mb-2">
                         <FontAwesomeIcon icon={faEnvelope} className="me-2" />
-                        {user.email}
+                        {user?.email || 'No email provided'}
                       </p>
-                      {user.occupation && (
+                      {user?.occupation && (
                         <p className="text-muted mb-2">
                           <FontAwesomeIcon icon={faGraduationCap} className="me-2" />
                           {user.occupation}
                         </p>
                       )}
-                      {user.location && (
+                      {user?.location && (
                         <p className="text-muted mb-2">
                           <i className="fas fa-map-marker-alt me-2"></i>
                           {user.location}
                         </p>
                       )}
-                      {user.website && (
+                      {user?.website && (
                         <p className="mb-2">
                           <i className="fas fa-globe me-2"></i>
                           <a href={user.website} target="_blank" rel="noopener noreferrer">
@@ -195,11 +200,11 @@ function ProfilePage() {
                       )}
                       <p className="text-muted mb-2">
                         <FontAwesomeIcon icon={faCalendarAlt} className="me-2" />
-                        Joined {user.joinDate || "May 2025"}
+                        Joined {user?.joinDate || "May 2025"}
                       </p>
                     </div>
                     
-                    {user.bio ? (
+                    {user?.bio ? (
                       <div className="profile-bio mb-4">
                         <h5>About Me</h5>
                         <p>{user.bio}</p>
@@ -214,7 +219,7 @@ function ProfilePage() {
                     {/* Education Section */}
                     <div className="profile-education mb-4">
                       <h5>Education</h5>
-                      {user.education && user.education.length > 0 ? (
+                      {user?.education && user.education.length > 0 ? (
                         user.education.map((edu, index) => (
                           <div key={index} className="mb-2">
                             <h6 className="mb-0">{edu.degree}</h6>
@@ -226,11 +231,11 @@ function ProfilePage() {
                         <p className="text-muted fst-italic">No education information added yet.</p>
                       )}
                     </div>
-                    
+
                     {/* Skills Section */}
                     <div className="profile-skills">
                       <h5>Skills</h5>
-                      {user.skills && user.skills.length > 0 ? (
+                      {user?.skills && user.skills.length > 0 ? (
                         <div className="d-flex flex-wrap gap-2">
                           {user.skills.map((skill, index) => (
                             <span key={index} className="badge bg-light text-dark py-2 px-3">
@@ -369,7 +374,7 @@ function ProfilePage() {
                       {formData.avatar ? (
                         <img
                           src={formData.avatar}
-                          alt={formData.name}
+                          alt={displayName}
                           className="rounded-circle img-fluid border"
                           style={{ width: '120px', height: '120px', objectFit: 'cover' }}
                           onError={(e) => {
@@ -399,9 +404,9 @@ function ProfilePage() {
                     </div>
                   )}
                 </div>
-                
-                <h4 className="fw-bold">{user.name}</h4>
-                <p className="text-muted mb-0">{user.role || "Student"}</p>
+
+                <h4 className="fw-bold">{displayName}</h4>
+                <p className="text-muted mb-0">{userRole}</p>
               </div>
             </div>
             
@@ -412,22 +417,22 @@ function ProfilePage() {
                 
                 <div className="stat-item d-flex justify-content-between align-items-center mb-3">
                   <span>Courses Enrolled</span>
-                  <span className="badge bg-primary">{user.enrolledCourses?.length || 3}</span>
+                  <span className="badge bg-primary">{user?.enrolledCourses?.length || 3}</span>
                 </div>
-                
+
                 <div className="stat-item d-flex justify-content-between align-items-center mb-3">
                   <span>Courses Completed</span>
-                  <span className="badge bg-success">{user.completedCourses?.length || 1}</span>
+                  <span className="badge bg-success">{user?.completedCourses?.length || 1}</span>
                 </div>
-                
+
                 <div className="stat-item d-flex justify-content-between align-items-center mb-3">
                   <span>Certificates Earned</span>
-                  <span className="badge bg-info">{user.certificates?.length || 1}</span>
+                  <span className="badge bg-info">{user?.certificates?.length || 1}</span>
                 </div>
-                
+
                 <div className="stat-item d-flex justify-content-between align-items-center">
                   <span>Achievements</span>
-                  <span className="badge bg-warning">{user.achievements?.length || 2}</span>
+                  <span className="badge bg-warning">{user?.achievements?.length || 2}</span>
                 </div>
               </div>
             </div>
@@ -440,10 +445,10 @@ function ProfilePage() {
                   <strong>Status:</strong> <span className="text-success">Active</span>
                 </p>
                 <p className="mb-2">
-                  <strong>Membership:</strong> {user.membership || "Free"}
+                  <strong>Membership:</strong> {user?.membership || "Free"}
                 </p>
                 <p className="mb-0">
-                  <strong>Joined:</strong> {user.joinDate || "May 2025"}
+                  <strong>Joined:</strong> {user?.joinDate || "May 2025"}
                 </p>
               </div>
             </div>

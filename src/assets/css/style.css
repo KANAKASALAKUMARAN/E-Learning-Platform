@@ -548,3 +548,205 @@ body {
     transform: none;
   }
 }
+
+/* Animation keyframes for About Us and Contact Us pages */
+@keyframes gradientAnimation {
+  0% { transform: translateX(0) translateY(0); }
+  100% { transform: translateX(-50px) translateY(-50px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation classes */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease-out;
+}
+
+.reveal-on-scroll.animate-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  animation: fadeInLeft 0.8s ease-out;
+}
+
+.reveal-right {
+  animation: fadeInRight 0.8s ease-out;
+}
+
+.slide-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.slide-up.delay-1 {
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.slide-up.delay-2 {
+  animation-delay: 0.4s;
+  animation-fill-mode: both;
+}
+
+.slide-in-left {
+  animation: fadeInLeft 0.6s ease-out;
+}
+
+.slide-in-right {
+  animation: fadeInRight 0.6s ease-out;
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Hover effects for cards and buttons */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Contact form enhancements */
+.contact-us-page .form-control:focus,
+.contact-us-page .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.contact-us-page .btn-primary {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.contact-us-page .btn-primary:hover {
+  background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+}
+
+/* About Us page specific styles */
+.about-us-page .stats-counter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.about-us-page .team-member-card {
+  transition: all 0.3s ease;
+}
+
+.about-us-page .team-member-card:hover {
+  transform: translateY(-10px);
+}
+
+.about-us-page .team-member-card img {
+  transition: transform 0.3s ease;
+}
+
+.about-us-page .team-member-card:hover img {
+  transform: scale(1.05);
+}
+
+/* FAQ accordion enhancements */
+.accordion-button {
+  transition: all 0.3s ease;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Social media hover effects */
+.social-link {
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-3px);
+}
+
+/* Responsive adjustments for new pages */
+@media (max-width: 768px) {
+  .about-us-page .display-4,
+  .contact-us-page .display-4 {
+    font-size: 2.5rem;
+  }
+
+  .about-us-page .lead,
+  .contact-us-page .lead {
+    font-size: 1.1rem;
+  }
+
+  .about-us-page .team-member-card,
+  .contact-us-page .contact-info-card {
+    margin-bottom: 2rem;
+  }
+}

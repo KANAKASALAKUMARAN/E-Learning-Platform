@@ -19,6 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { getWelcomeMessage } from '../utils/userUtils';
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
@@ -347,7 +348,7 @@ function SettingsPage() {
         <div className="row mb-4">
           <div className="col-md-12">
             <h1 className="fw-bold">Settings</h1>
-            <p className="text-muted">Manage your account settings and preferences</p>
+            <p className="text-muted">{getWelcomeMessage(user, 'settings')}</p>
           </div>
         </div>
         

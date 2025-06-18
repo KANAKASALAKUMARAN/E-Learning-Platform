@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
 import { DEFAULT_AVATAR } from '../../constants/images';
+import { getUserDisplayName, getUserRole } from '../../utils/userUtils';
 
 const UserProfileDropdown = ({ className = '' }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,14 +74,8 @@ const UserProfileDropdown = ({ className = '' }) => {
     return DEFAULT_AVATAR;
   };
 
-  const getUserDisplayName = () => {
-    return user?.name || 'User';
-  };
-
-  const getUserRole = () => {
-    const role = user?.role || 'student';
-    return role.charAt(0).toUpperCase() + role.slice(1);
-  };
+  const displayName = getUserDisplayName(user);
+  const userRole = getUserRole(user);
 
   if (!user) {
     return null;
@@ -99,7 +94,7 @@ const UserProfileDropdown = ({ className = '' }) => {
           <div className="avatar-container me-2">
             <img
               src={getAvatarSrc()}
-              alt={getUserDisplayName()}
+              alt={displayName}
               className="rounded-circle"
               style={{ width: '32px', height: '32px', objectFit: 'cover' }}
               onError={(e) => {
@@ -109,10 +104,10 @@ const UserProfileDropdown = ({ className = '' }) => {
           </div>
           <div className="user-info d-none d-md-block text-start">
             <div className="user-name fw-semibold text-dark" style={{ fontSize: '14px', lineHeight: '1.2' }}>
-              {getUserDisplayName()}
+              {displayName}
             </div>
             <div className="user-role text-muted" style={{ fontSize: '12px', lineHeight: '1.2' }}>
-              {getUserRole()}
+              {userRole}
             </div>
           </div>
           <FontAwesomeIcon 
@@ -129,7 +124,7 @@ const UserProfileDropdown = ({ className = '' }) => {
           <div className="d-flex align-items-center">
             <img
               src={getAvatarSrc()}
-              alt={getUserDisplayName()}
+              alt={displayName}
               className="rounded-circle me-3"
               style={{ width: '40px', height: '40px', objectFit: 'cover' }}
               onError={(e) => {
@@ -137,9 +132,9 @@ const UserProfileDropdown = ({ className = '' }) => {
               }}
             />
             <div>
-              <div className="fw-semibold text-dark">{getUserDisplayName()}</div>
+              <div className="fw-semibold text-dark">{displayName}</div>
               <div className="text-muted small">{user?.email}</div>
-              <div className="badge bg-primary small">{getUserRole()}</div>
+              <div className="badge bg-primary small">{userRole}</div>
             </div>
           </div>
         </div>
