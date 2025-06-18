@@ -2,6 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
+// Context Providers
+import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+
 // Layout Components
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -97,19 +101,23 @@ function MainContent() {
 
 function App() {
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true
-      }}
-    >
-      <ScrollToTop />
-      <div className="d-flex flex-column min-vh-100">
-        <Header />
-        <MainContent />
-        <Footer />
-      </div>
-    </Router>
+    <ThemeProvider>
+      <AuthProvider>
+        <Router
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true
+          }}
+        >
+          <ScrollToTop />
+          <div className="d-flex flex-column min-vh-100">
+            <Header />
+            <MainContent />
+            <Footer />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

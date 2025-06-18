@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faUser, 
-  faEnvelope, 
-  faEdit, 
-  faSave, 
+import {
+  faUser,
+  faEnvelope,
+  faEdit,
+  faSave,
   faCamera,
   faGraduationCap,
   faCalendarAlt
 } from '@fortawesome/free-solid-svg-icons';
-import authService from '../services/api/authService';
+import { useAuth } from '../contexts/AuthContext';
+import ProfilePictureUpload from '../components/common/ProfilePictureUpload';
+import { DEFAULT_AVATAR } from '../constants/images';
 
 function ProfilePage() {
-  const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,51 +29,36 @@ function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState('');
-  
+
   const navigate = useNavigate();
+  const { user, updateProfile } = useAuth();
   
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
 
-        // Check if this is a demo user first
-        const token = localStorage.getItem('token');
-        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-        if (token && token.startsWith('demo-token-')) {
-          // Use demo data from localStorage
-          setUser(storedUser);
-          populateFormData(storedUser);
-          setLoading(false);
-          return;
-        }
-
-        // Try to get user profile from API for real users
-        const userData = await authService.getUserProfile();
-        setUser(userData);
-        populateFormData(userData);
-      } catch (err) {
-        console.error('Error fetching user profile:', err);
-        // Fallback to localStorage for demo
-        const storedUser = JSON.parse(localStorage.getItem('currentUser'));
-        
-        if (storedUser) {
-          setUser(storedUser);
-          populateFormData(storedUser);
+        if (user) {
+          populateFormData(user);
         } else {
           setError('Unable to load profile. Please log in again.');
           setTimeout(() => {
             navigate('/login');
           }, 3000);
         }
+      } catch (err) {
+        console.error('Error fetching user profile:', err);
+        setError('Unable to load profile. Please log in again.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchUserProfile();
-  }, [navigate]);
+  }, [user, navigate]);
   
   const populateFormData = (userData) => {
     setFormData({
@@ -90,6 +76,10 @@ function ProfilePage() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  const handleAvatarChange = (avatarUrl) => {
+    setFormData({ ...formData, avatar: avatarUrl });
+  };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,25 +89,9 @@ function ProfilePage() {
 
       const token = localStorage.getItem('token');
 
-      if (token && token.startsWith('demo-token-')) {
-        // For demo users, just update localStorage
-        const updatedUser = { ...user, ...formData };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-        setUser(updatedUser);
-        setSuccessMsg('Profile updated successfully!');
-        setIsEditing(false);
-      } else {
-        // Call API to update profile for real users
-        await authService.updateProfile(formData);
-
-        // Update user in localStorage
-        const updatedUser = { ...user, ...formData };
-        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-
-        setUser(updatedUser);
-        setSuccessMsg('Profile updated successfully!');
-        setIsEditing(false);
-      }
+      await updateProfile(formData);
+      setSuccessMsg('Profile updated successfully!');
+      setIsEditing(false);
 
       // Clear success message after 3 seconds
       setTimeout(() => {
@@ -126,28 +100,12 @@ function ProfilePage() {
     } catch (err) {
       console.error('Error updating profile:', err);
       setError('Failed to update profile. Please try again.');
-
-      // For demo, update anyway
-      const updatedUser = { ...user, ...formData };
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      setUser(updatedUser);
     } finally {
       setSaving(false);
     }
   };
   
-  const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    // For a real implementation, you would upload the file to your server
-    // and get back a URL. For this demo, we'll create a local object URL
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setFormData({ ...formData, avatar: event.target.result });
-    };
-    reader.readAsDataURL(file);
-  };
+
 
   if (loading) {
     return (
@@ -399,34 +357,45 @@ function ProfilePage() {
           <div className="col-lg-4 order-lg-2 order-1 mb-4 mb-lg-0">
             <div className="card border-0 shadow-sm text-center mb-4">
               <div className="card-body p-4">
-                <div className="position-relative mb-4 mx-auto" style={{ width: '150px', height: '150px' }}>
-                  {isEditing && (
-                    <div className="position-absolute bottom-0 end-0 mb-2 me-2">
-                      <label htmlFor="avatar-upload" className="btn btn-sm btn-primary rounded-circle">
-                        <FontAwesomeIcon icon={faCamera} />
-                        <input
-                          type="file"
-                          id="avatar-upload"
-                          className="d-none"
-                          accept="image/*"
-                          onChange={handleAvatarChange}
-                        />
-                      </label>
-                    </div>
-                  )}
-                  {formData.avatar ? (
-                    <img
-                      src={formData.avatar}
-                      alt={formData.name}
-                      className="rounded-circle img-fluid border"
-                      style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                <div className="mb-4">
+                  {isEditing ? (
+                    <ProfilePictureUpload
+                      currentAvatar={formData.avatar}
+                      onAvatarChange={handleAvatarChange}
+                      size="large"
                     />
                   ) : (
-                    <div 
-                      className="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white"
-                      style={{ width: '150px', height: '150px' }}
-                    >
-                      <FontAwesomeIcon icon={faUser} size="4x" />
+                    <div className="mx-auto" style={{ width: '120px', height: '120px' }}>
+                      {formData.avatar ? (
+                        <img
+                          src={formData.avatar}
+                          alt={formData.name}
+                          className="rounded-circle img-fluid border"
+                          style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.target.src = DEFAULT_AVATAR;
+                          }}
+                        />
+                      ) : (
+                        <img
+                          src={DEFAULT_AVATAR}
+                          alt="Default Profile"
+                          className="rounded-circle img-fluid border"
+                          style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                          onError={(e) => {
+                            // If default avatar fails, show icon
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      )}
+                      {/* Fallback icon for broken images */}
+                      <div
+                        className="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white position-absolute top-0 start-0"
+                        style={{ width: '120px', height: '120px', display: 'none' }}
+                      >
+                        <FontAwesomeIcon icon={faUser} size="3x" />
+                      </div>
                     </div>
                   )}
                 </div>

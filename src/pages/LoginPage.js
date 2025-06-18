@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faGoogle, 
-  faFacebookF, 
-  faApple 
+import {
+  faGoogle,
+  faFacebookF,
+  faApple
 } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faLock, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
-import authService from '../services/api/authService';
+import { useAuth } from '../contexts/AuthContext';
 
 function LoginPage() {
   const [formData, setFormData] = useState({
@@ -15,10 +15,11 @@ function LoginPage() {
     password: '',
     rememberMe: false
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, demoLogin } = useAuth();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -61,38 +62,21 @@ function LoginPage() {
       setIsLoading(true);
       try {
         console.log('Attempting to login with:', formData.email);
-        const userData = await authService.login({
+        await login({
           email: formData.email,
           password: formData.password
-        });
-        
-        // Store token based on remember me preference
-        if (formData.rememberMe) {
-          localStorage.setItem('token', userData.token);
-        } else {
-          sessionStorage.setItem('token', userData.token);
-        }
-        
-        // Store user data in localStorage, handling different possible response structures
-        const userToStore = {
-          id: userData._id || userData.id || userData.user?._id || userData.user?.id,
-          name: userData.fullName || userData.name || userData.user?.fullName || userData.user?.name,
-          email: userData.email || userData.user?.email,
-          role: userData.role || userData.user?.role
-        };
-        
-        localStorage.setItem('currentUser', JSON.stringify(userToStore));
-        
+        }, formData.rememberMe);
+
         // Redirect to dashboard
         navigate('/dashboard');
       } catch (error) {
         console.error('Login error:', error);
         let errorMessage = 'Login failed';
-        
+
         if (error.message) {
           errorMessage = error.message;
         }
-        
+
         setErrors({ general: errorMessage });
       } finally {
         setIsLoading(false);
@@ -102,27 +86,11 @@ function LoginPage() {
 
   const handleDemoLogin = async (e) => {
     e.preventDefault();
-    
+
     setIsLoading(true);
     try {
       console.log('Attempting demo login');
-      
-      // Use the dedicated demo login function from authService
-      try {
-        const { user, token } = authService.demoLogin();
-        
-        // Store token in localStorage (demo users are always remembered)
-        localStorage.setItem('token', token);
-        
-        // No need to transform user object as demoLogin already provides consistent structure
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      } catch (apiError) {
-        console.log('Demo login failed:', apiError);
-        setErrors({ general: 'Demo login failed. Please try again.' });
-        return;
-      }
-      
-      // Redirect to dashboard
+      demoLogin();
       navigate('/dashboard');
     } catch (error) {
       console.error('Demo login error:', error);

@@ -16,6 +16,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import authService from '../services/api/authService';
 import CourseService from '../services/api/courseService';
+import { DEFAULT_AVATAR } from '../constants/images';
 
 function DashboardPage() {
   const [user, setUser] = useState(null);
@@ -271,12 +272,15 @@ function DashboardPage() {
                             <div className="card-body">
                               <h5 className="card-title">{course.title}</h5>
                               <div className="d-flex align-items-center mb-2">
-                                <img 
-                                  src={course.instructor?.image || "/assets/images/avatar-placeholder.jpg"} 
-                                  className="rounded-circle me-2" 
-                                  width="25" 
-                                  height="25" 
-                                  alt="Instructor" 
+                                <img
+                                  src={course.instructor?.image || DEFAULT_AVATAR}
+                                  className="rounded-circle me-2"
+                                  width="25"
+                                  height="25"
+                                  alt="Instructor"
+                                  onError={(e) => {
+                                    e.target.src = DEFAULT_AVATAR;
+                                  }}
                                 />
                                 <small>{course.instructor?.name || "Instructor"}</small>
                               </div>

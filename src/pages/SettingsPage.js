@@ -1,27 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faLock, 
-  faBell, 
-  faUserShield, 
-  faTrash, 
+import {
+  faLock,
+  faBell,
+  faUserShield,
+  faTrash,
   faEnvelope,
   faSave,
   faShieldAlt,
   faMoon,
   faDesktop,
-  faUser
+  faUser,
+  faSun,
+  faPalette,
+  faGlobe,
+  faTextHeight
 } from '@fortawesome/free-solid-svg-icons';
-import authService from '../services/api/authService';
+import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 function SettingsPage() {
   const [activeTab, setActiveTab] = useState('account');
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [error, setError] = useState(null);
+
+  // Use contexts
+  const { user, updateProfile } = useAuth();
+  const {
+    theme,
+    fontSize,
+    reduceAnimations,
+    highContrast,
+    language,
+    updateTheme,
+    updateFontSize,
+    updateReduceAnimations,
+    updateHighContrast,
+    updateLanguage
+  } = useTheme();
   
   // Form states
   const [accountSettings, setAccountSettings] = useState({
@@ -56,10 +75,11 @@ function SettingsPage() {
   });
   
   const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: 'light',
-    fontSize: 'medium',
-    reduceAnimations: false,
-    highContrast: false
+    theme: theme,
+    fontSize: fontSize,
+    reduceAnimations: reduceAnimations,
+    highContrast: highContrast,
+    language: language
   });
   
   const navigate = useNavigate();
@@ -69,60 +89,28 @@ function SettingsPage() {
       try {
         setLoading(true);
 
-        // Check if this is a demo user first
-        const token = localStorage.getItem('token');
-        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-        if (token && token.startsWith('demo-token-')) {
-          // Use demo data from localStorage
-          setUser(storedUser);
-
-          // Populate settings from user data if available
-          if (storedUser.settings) {
-            if (storedUser.settings.account) setAccountSettings(storedUser.settings.account);
-            if (storedUser.settings.notifications) setNotificationSettings(storedUser.settings.notifications);
-            if (storedUser.settings.privacy) setPrivacySettings(storedUser.settings.privacy);
-            if (storedUser.settings.appearance) setAppearanceSettings(storedUser.settings.appearance);
-          }
-          setLoading(false);
-          return;
-        }
-
-        // Try to get user from API for real users
-        const userData = await authService.getUserProfile();
-        setUser(userData);
-        
-        // Populate settings from user data if available
-        if (userData.settings) {
-          if (userData.settings.account) setAccountSettings(userData.settings.account);
-          if (userData.settings.notifications) setNotificationSettings(userData.settings.notifications);
-          if (userData.settings.privacy) setPrivacySettings(userData.settings.privacy);
-          if (userData.settings.appearance) setAppearanceSettings(userData.settings.appearance);
-        } else {
+        if (user) {
           // Use defaults with user's email
-          setAccountSettings(prev => ({ ...prev, email: userData.email }));
-        }
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-        
-        // Fallback to localStorage for demo
-        const storedUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (storedUser) {
-          setUser(storedUser);
-          setAccountSettings(prev => ({ ...prev, email: storedUser.email }));
+          setAccountSettings(prev => ({ ...prev, email: user.email }));
         } else {
           setError('Unable to load user settings. Please log in again.');
           setTimeout(() => {
             navigate('/login');
           }, 3000);
         }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+        setError('Unable to load user settings. Please log in again.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchUserData();
-  }, [navigate]);
+  }, [user, navigate]);
   
   // Handle form changes
   const handleAccountChange = (e) => {
@@ -149,7 +137,29 @@ function SettingsPage() {
   const handleAppearanceChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
+
     setAppearanceSettings({ ...appearanceSettings, [name]: newValue });
+
+    // Apply changes immediately to theme context
+    switch (name) {
+      case 'theme':
+        updateTheme(newValue);
+        break;
+      case 'fontSize':
+        updateFontSize(newValue);
+        break;
+      case 'reduceAnimations':
+        updateReduceAnimations(newValue);
+        break;
+      case 'highContrast':
+        updateHighContrast(newValue);
+        break;
+      case 'language':
+        updateLanguage(newValue);
+        break;
+      default:
+        break;
+    }
   };
   
   // Handle form submissions
@@ -311,11 +321,11 @@ function SettingsPage() {
   const handleDeleteAccount = () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       // For a real app, call API to delete user account
-      // authService.deleteAccount();
-      
+      // await deleteAccount();
+
       alert('In a real application, your account would be deleted. For this demo, you will be logged out.');
-      authService.logout();
-      navigate('/');
+      // Use logout from auth context
+      window.location.href = '/';
     }
   };
   
@@ -924,7 +934,29 @@ function SettingsPage() {
                           High contrast mode
                         </label>
                       </div>
-                      
+
+                      <div className="mb-4">
+                        <label htmlFor="language" className="form-label">
+                          <FontAwesomeIcon icon={faGlobe} className="me-2" />
+                          Language
+                        </label>
+                        <select
+                          className="form-select"
+                          id="language"
+                          name="language"
+                          value={appearanceSettings.language}
+                          onChange={handleAppearanceChange}
+                        >
+                          <option value="english">English</option>
+                          <option value="spanish">Español</option>
+                          <option value="french">Français</option>
+                          <option value="german">Deutsch</option>
+                          <option value="chinese">中文</option>
+                          <option value="japanese">日本語</option>
+                        </select>
+                        <small className="text-muted">Select your preferred language</small>
+                      </div>
+
                       <div className="d-grid gap-2 d-md-flex justify-content-md-end">
                         <button 
                           type="submit" 

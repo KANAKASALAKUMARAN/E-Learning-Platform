@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faGoogle, 
-  faFacebookF, 
-  faApple 
+import {
+  faGoogle,
+  faFacebookF,
+  faApple
 } from '@fortawesome/free-brands-svg-icons';
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import authService from '../services/api/authService';
+import { useAuth } from '../contexts/AuthContext';
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -17,10 +17,11 @@ function SignupPage() {
     confirmPassword: '',
     agreeTerms: false
   });
-  
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { register } = useAuth();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -77,31 +78,22 @@ function SignupPage() {
       setIsLoading(true);
       try {
         console.log('Attempting to register with:', formData.email);
-        const userData = await authService.register({
+        await register({
           fullName: formData.fullName,
           email: formData.email,
           password: formData.password
         });
-        
-        // Store user data and token in localStorage
-        localStorage.setItem('token', userData.token);
-        localStorage.setItem('currentUser', JSON.stringify({
-          id: userData._id,
-          name: userData.fullName,
-          email: userData.email,
-          role: userData.role
-        }));
-        
+
         // Redirect to dashboard
         navigate('/dashboard');
       } catch (error) {
         console.error('Registration error:', error);
         let errorMessage = 'Registration failed';
-        
+
         if (error.message) {
           errorMessage = error.message;
         }
-        
+
         setErrors({ general: errorMessage });
       } finally {
         setIsLoading(false);
