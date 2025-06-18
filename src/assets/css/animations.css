@@ -121,28 +121,34 @@
 }
 
 /* ===== Utility Classes ===== */
-/* Animation Classes */
+/* Animation Classes - FIXED VERSION */
 .fade-in {
+  opacity: 1; /* Ensure visible by default */
   animation: fadeIn 0.6s ease-in-out;
 }
 
 .slide-up {
+  opacity: 1; /* Ensure visible by default */
   animation: slideUp 0.6s ease-in-out;
 }
 
 .slide-down {
+  opacity: 1; /* Ensure visible by default */
   animation: slideDown 0.6s ease-in-out;
 }
 
 .slide-in-right {
+  opacity: 1; /* Ensure visible by default */
   animation: slideInRight 0.6s ease-in-out;
 }
 
 .slide-in-left {
+  opacity: 1; /* Ensure visible by default */
   animation: slideInLeft 0.6s ease-in-out;
 }
 
 .scale-in {
+  opacity: 1; /* Ensure visible by default */
   animation: scaleIn 0.5s ease-in-out;
 }
 
@@ -342,10 +348,10 @@
   transform: scale(1.1);
 }
 
-/* Scroll Reveal Animation Classes */
+/* Scroll Reveal Animation Classes - FIXED VERSION */
 .reveal {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1; /* Ensure visible by default */
+  transform: translateY(0); /* Start in final position */
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -355,8 +361,8 @@
 }
 
 .reveal-left {
-  opacity: 0;
-  transform: translateX(-50px);
+  opacity: 1; /* Ensure visible by default */
+  transform: translateX(0); /* Start in final position */
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -366,8 +372,8 @@
 }
 
 .reveal-right {
-  opacity: 0;
-  transform: translateX(50px);
+  opacity: 1; /* Ensure visible by default */
+  transform: translateX(0); /* Start in final position */
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -464,9 +470,9 @@
   left: 100%;
 }
 
-/* Entrance animations */
+/* Entrance animations - FIXED VERSION */
 .fade-in {
-  opacity: 0;
+  opacity: 1; /* Ensure visible by default */
   animation: fadeIn 0.5s ease forwards;
 }
 
@@ -480,8 +486,7 @@
 }
 
 .slide-in-left {
-  opacity: 0;
-  transform: translateX(-50px);
+  opacity: 1; /* Ensure visible by default */
   animation: slideInLeft 0.5s ease forwards;
 }
 
@@ -497,8 +502,7 @@
 }
 
 .slide-in-right {
-  opacity: 0;
-  transform: translateX(50px);
+  opacity: 1; /* Ensure visible by default */
   animation: slideInRight 0.5s ease forwards;
 }
 
@@ -514,8 +518,7 @@
 }
 
 .slide-up {
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1; /* Ensure visible by default */
   animation: slideUp 0.5s ease forwards;
 }
 
@@ -531,8 +534,7 @@
 }
 
 .scale-in {
-  opacity: 0;
-  transform: scale(0.8);
+  opacity: 1; /* Ensure visible by default */
   animation: scaleIn 0.5s ease forwards;
 }
 
@@ -560,22 +562,22 @@
   animation-delay: 0.6s !important;
 }
 
-/* Scroll reveal animations */
+/* Scroll reveal animations - FIXED VERSION */
 .reveal, .reveal-left, .reveal-right {
-  opacity: 0;
+  opacity: 1; /* Ensure visible by default */
   transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 .reveal {
-  transform: translateY(20px);
+  transform: translateY(0); /* Start in final position */
 }
 
 .reveal-left {
-  transform: translateX(-50px);
+  transform: translateX(0); /* Start in final position */
 }
 
 .reveal-right {
-  transform: translateX(50px);
+  transform: translateX(0); /* Start in final position */
 }
 
 .reveal.active, .reveal-left.active, .reveal-right.active {

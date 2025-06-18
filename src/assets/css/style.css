@@ -764,6 +764,68 @@ body {
   transform: translateY(-3px);
 }
 
+/* Courses Page Specific Fixes */
+.courses-page .display-4 {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.courses-page .slide-up {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.courses-page .reveal {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* About Us Page Specific Fixes */
+.about-us-page .stats-counter {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.about-us-page .slide-up {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.about-us-page .card-body h3 {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.about-us-page .text-primary {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Global Animation Fallbacks - Ensure all text is visible */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Specific animation class fallbacks */
+.slide-up, .slide-down, .slide-in-left, .slide-in-right,
+.fade-in, .scale-in, .reveal, .reveal-left, .reveal-right {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure hero sections are always visible */
+.hero-section h1, .hero-section h2, .hero-section p {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Ensure stats and counters are always visible */
+.stats-counter, .display-4, .lead {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 /* Responsive adjustments for new pages */
 @media (max-width: 768px) {
   .about-us-page .display-4,
