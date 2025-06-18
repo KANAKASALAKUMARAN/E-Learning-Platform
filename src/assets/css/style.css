@@ -166,6 +166,31 @@ main.flex-grow-1.home-main {
   text-decoration: none !important;
 }
 
+/* Ensure navbar navigation items are always visible */
+.navbar-nav .nav-item {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.navbar-nav .nav-item.fade-in {
+  opacity: 1 !important;
+}
+
+/* Ensure navbar collapse is visible on desktop */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .navbar-nav {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -640,14 +665,20 @@ body {
 
 .slide-in-left {
   animation: fadeInLeft 0.6s ease-out;
+  animation-fill-mode: both;
+  opacity: 1; /* Ensure elements are visible by default */
 }
 
 .slide-in-right {
   animation: fadeInRight 0.6s ease-out;
+  animation-fill-mode: both;
+  opacity: 1; /* Ensure elements are visible by default */
 }
 
 .fade-in {
   animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+  opacity: 1; /* Ensure elements are visible by default */
 }
 
 .scale-in {
