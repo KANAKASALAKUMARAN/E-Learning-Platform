@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faSearch, 
+import {
+  faSearch,
   faUser,
   faSignOutAlt,
   faCog,
   faGraduationCap,
-  faTrophy,
-  faBook,
   faUserGraduate,
   faBell,
   faShoppingCart,
@@ -28,8 +26,15 @@ function Header() {
   const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const searchInputRef = useRef(null);
-  
+
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Configuration for pages that should have dark navbar text
+  const darkNavbarPages = ['/courses', '/about-us', '/contact', '/login', '/signup', '/dashboard', '/profile', '/settings'];
+
+  // Check if current page should have dark navbar
+  const shouldUseDarkNavbar = darkNavbarPages.includes(location.pathname) || isScrolled;
   
   // Handle scroll effect for header
   useEffect(() => {
@@ -112,30 +117,30 @@ function Header() {
 
   return (
     <header>
-      <nav className={`navbar navbar-expand-lg navbar-light fixed-top transition-all ${isScrolled ? 'bg-white shadow-sm py-2' : 'bg-transparent py-3'}`}>
+      <nav className={`navbar navbar-expand-lg navbar-light fixed-top transition-all ${shouldUseDarkNavbar ? 'bg-white shadow-sm py-2' : 'bg-transparent py-3'}`}>
         <div className="container">
           <Link className="navbar-brand fw-bold slide-in-left" to="/">
             <div className="d-flex align-items-center">
-              <div className="brand-logo me-2 rounded-circle bg-primary d-flex align-items-center justify-content-center" 
+              <div className="brand-logo me-2 rounded-circle bg-primary d-flex align-items-center justify-content-center"
                   style={{ width: '40px', height: '40px', overflow: 'hidden' }}>
                 <FontAwesomeIcon icon={faGraduationCap} className="text-white" />
               </div>
               <div>
-                <span className={`${isScrolled ? 'text-primary' : 'text-white'}`}>Learn</span>
-                <span className={isScrolled ? 'text-dark' : 'text-white'}>Hub</span>
+                <span className={`${shouldUseDarkNavbar ? 'text-primary' : 'text-white'}`}>Learn</span>
+                <span className={shouldUseDarkNavbar ? 'text-dark' : 'text-white'}>Hub</span>
               </div>
             </div>
           </Link>
           
-          <button 
-            className={`navbar-toggler border-0 hover-shadow ${isScrolled ? '' : 'text-white'}`}
-            type="button" 
-            data-bs-toggle="collapse" 
+          <button
+            className={`navbar-toggler border-0 hover-shadow ${shouldUseDarkNavbar ? '' : 'text-white'}`}
+            type="button"
+            data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
             onClick={toggleMenu}
             aria-expanded={menuOpen}
           >
-            <span className={`navbar-toggler-icon ${isScrolled ? '' : 'text-white'}`}></span>
+            <span className={`navbar-toggler-icon ${shouldUseDarkNavbar ? '' : 'text-white'}`}></span>
           </button>
           
           <div className={`collapse navbar-collapse ${menuOpen ? 'show' : ''}`} id="navbarNav">
@@ -147,20 +152,13 @@ function Header() {
                 { path: '/contact', label: 'Contact' }
               ].map((nav, index) => (
                 <li className="nav-item fade-in" style={{animationDelay: `${0.1 * (index + 1)}s`}} key={nav.path}>
-                  <NavLink 
-                    className={({ isActive }) => 
-                      `nav-link position-relative transition-all px-3 mx-1 ${isActive ? 'active fw-bold' : ''} ${isScrolled ? '' : 'text-white'}`
-                    } 
+                  <NavLink
+                    className={({ isActive }) =>
+                      `nav-link position-relative transition-all px-3 mx-1 ${isActive ? 'active fw-bold' : ''} ${shouldUseDarkNavbar ? 'text-dark' : 'text-white'}`
+                    }
                     to={nav.path}
                   >
                     {nav.label}
-                    <span className="position-absolute bottom-0 start-50 translate-middle-x w-0 height-2px bg-primary transition-all" 
-                          style={{ 
-                            height: '2px', 
-                            transition: 'width 0.3s ease', 
-                            width: '0%'
-                          }}>
-                    </span>
                   </NavLink>
                 </li>
               ))}
@@ -169,14 +167,14 @@ function Header() {
             <div className="d-flex align-items-center gap-3 slide-in-right">
               {/* Search button and form */}
               <div className={`search-container position-relative ${searchActive ? 'active' : ''}`}>
-                <button 
+                <button
                   className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center transition-all ${
-                    isScrolled ? 'btn-light' : 'btn-outline-light'
+                    shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                   } ${searchActive ? 'd-none' : ''}`}
                   onClick={toggleSearch}
                   style={{ width: '38px', height: '38px' }}
                 >
-                  <FontAwesomeIcon icon={faSearch} className={isScrolled ? 'text-primary' : 'text-white'} />
+                  <FontAwesomeIcon icon={faSearch} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
                 </button>
                 
                 <form 
@@ -220,13 +218,13 @@ function Header() {
               {isLoggedIn && (
                 <>
                   <div className="position-relative mx-1">
-                    <button 
+                    <button
                       className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
-                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                        shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                       }`}
                       style={{ width: '38px', height: '38px' }}
                     >
-                      <FontAwesomeIcon icon={faBell} className={isScrolled ? 'text-primary' : 'text-white'} />
+                      <FontAwesomeIcon icon={faBell} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                         2
                       </span>
@@ -234,26 +232,26 @@ function Header() {
                   </div>
                   
                   <div className="position-relative mx-1">
-                    <Link 
+                    <Link
                       to="/wishlist"
                       className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
-                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                        shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                       }`}
                       style={{ width: '38px', height: '38px' }}
                     >
-                      <FontAwesomeIcon icon={faHeart} className={isScrolled ? 'text-primary' : 'text-white'} />
+                      <FontAwesomeIcon icon={faHeart} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
                     </Link>
                   </div>
                   
                   <div className="position-relative mx-1">
-                    <Link 
+                    <Link
                       to="/cart"
                       className={`btn btn-icon btn-sm rounded-circle d-flex align-items-center justify-content-center hover-lift transition-all ${
-                        isScrolled ? 'btn-light' : 'btn-outline-light'
+                        shouldUseDarkNavbar ? 'btn-light' : 'btn-outline-light'
                       }`}
                       style={{ width: '38px', height: '38px' }}
                     >
-                      <FontAwesomeIcon icon={faShoppingCart} className={isScrolled ? 'text-primary' : 'text-white'} />
+                      <FontAwesomeIcon icon={faShoppingCart} className={shouldUseDarkNavbar ? 'text-primary' : 'text-white'} />
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
                         3
                       </span>
@@ -272,17 +270,16 @@ function Header() {
                     <FontAwesomeIcon icon={faUserGraduate} className="me-1" />
                     Demo
                   </button>
-                  <Link to="/login" className={`btn btn-animated ${isScrolled ? 'btn-outline-primary' : 'btn-outline-light'} btn-sm rounded-pill hover-lift`}>Log In</Link>
+                  <Link to="/login" className={`btn btn-animated ${shouldUseDarkNavbar ? 'btn-outline-primary' : 'btn-outline-light'} btn-sm rounded-pill hover-lift`}>Log In</Link>
                   <Link to="/signup" className="btn btn-animated btn-primary btn-sm rounded-pill hover-lift">Sign Up</Link>
                 </div>
               ) : (
                 <div className="dropdown">
-                  <a 
-                    className="dropdown-toggle text-decoration-none d-flex align-items-center hover-lift" 
-                    href="#" 
-                    role="button" 
-                    id="userDropdown" 
-                    data-bs-toggle="dropdown" 
+                  <button
+                    className="dropdown-toggle text-decoration-none d-flex align-items-center hover-lift btn btn-link border-0 p-0"
+                    type="button"
+                    id="userDropdown"
+                    data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     <div className="d-flex align-items-center">
@@ -301,11 +298,11 @@ function Header() {
                           <FontAwesomeIcon icon={faUser} size="sm" />
                         </div>
                       )}
-                      <span className={`user-name d-none d-md-inline ms-2 fw-medium ${isScrolled ? 'text-dark' : 'text-white'}`}>
+                      <span className={`user-name d-none d-md-inline ms-2 fw-medium ${shouldUseDarkNavbar ? 'text-dark' : 'text-white'}`}>
                         {user.name}
                       </span>
                     </div>
-                  </a>
+                  </button>
                   <ul className="dropdown-menu dropdown-menu-end shadow border-0 scale-in" aria-labelledby="userDropdown" style={{ minWidth: '220px' }}>
                     <li className="px-3 py-2 d-flex align-items-center border-bottom">
                       <div className="rounded-circle overflow-hidden me-2" style={{ width: '32px', height: '32px' }}>
@@ -360,22 +357,26 @@ function Header() {
         </div>
       </nav>
       
-      {/* Custom CSS for nav-link hover effects */}
+      {/* Custom CSS for navbar */}
       <style jsx="true">{`
-        .navbar-nav .nav-link:hover span {
-          width: 100% !important;
-        }
-        
-        .navbar-nav .nav-link.active span {
-          width: 100% !important;
-        }
-        
         .search-form.active {
           z-index: 100;
         }
-        
+
         .dropdown-toggle::after {
           display: none;
+        }
+
+        /* Ensure no underlines on nav links */
+        .navbar-nav .nav-link {
+          text-decoration: none !important;
+          border-bottom: none !important;
+        }
+
+        .navbar-nav .nav-link:focus,
+        .navbar-nav .nav-link:active {
+          outline: none !important;
+          box-shadow: none !important;
         }
       `}</style>
     </header>

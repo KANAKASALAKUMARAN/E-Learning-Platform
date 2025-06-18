@@ -35,7 +35,20 @@ function ProfilePage() {
     const fetchUserProfile = async () => {
       try {
         setLoading(true);
-        // Try to get user profile from API
+
+        // Check if this is a demo user first
+        const token = localStorage.getItem('token');
+        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+        if (token && token.startsWith('demo-token-')) {
+          // Use demo data from localStorage
+          setUser(storedUser);
+          populateFormData(storedUser);
+          setLoading(false);
+          return;
+        }
+
+        // Try to get user profile from API for real users
         const userData = await authService.getUserProfile();
         setUser(userData);
         populateFormData(userData);
@@ -83,18 +96,29 @@ function ProfilePage() {
     try {
       setSaving(true);
       setError(null);
-      
-      // Call API to update profile
-      await authService.updateProfile(formData);
-      
-      // Update user in localStorage for demo purposes
-      const updatedUser = { ...user, ...formData };
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-      
-      setUser(updatedUser);
-      setSuccessMsg('Profile updated successfully!');
-      setIsEditing(false);
-      
+
+      const token = localStorage.getItem('token');
+
+      if (token && token.startsWith('demo-token-')) {
+        // For demo users, just update localStorage
+        const updatedUser = { ...user, ...formData };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        setUser(updatedUser);
+        setSuccessMsg('Profile updated successfully!');
+        setIsEditing(false);
+      } else {
+        // Call API to update profile for real users
+        await authService.updateProfile(formData);
+
+        // Update user in localStorage
+        const updatedUser = { ...user, ...formData };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+        setUser(updatedUser);
+        setSuccessMsg('Profile updated successfully!');
+        setIsEditing(false);
+      }
+
       // Clear success message after 3 seconds
       setTimeout(() => {
         setSuccessMsg('');
@@ -102,7 +126,7 @@ function ProfilePage() {
     } catch (err) {
       console.error('Error updating profile:', err);
       setError('Failed to update profile. Please try again.');
-      
+
       // For demo, update anyway
       const updatedUser = { ...user, ...formData };
       localStorage.setItem('currentUser', JSON.stringify(updatedUser));

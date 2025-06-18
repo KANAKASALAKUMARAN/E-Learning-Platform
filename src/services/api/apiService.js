@@ -15,7 +15,9 @@ API.interceptors.request.use(
   (config) => {
     console.log(`API Request: ${config.method.toUpperCase()} ${config.url}`, config.baseURL);
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) {
+
+    // Only add Authorization header for real JWT tokens, not demo tokens
+    if (token && !token.startsWith('demo-token-')) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

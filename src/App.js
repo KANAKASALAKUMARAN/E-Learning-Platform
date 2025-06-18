@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
@@ -55,22 +55,28 @@ const setupScrollReveal = () => {
 function MainContent() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+  const nodeRef = useRef(null);
+
   // Set up scroll reveal
   useEffect(() => {
     // Add small delay to ensure DOM is fully loaded
     const timer = setTimeout(() => {
       setupScrollReveal();
     }, 100);
-    
+
     return () => clearTimeout(timer);
   }, [location]);
-  
+
   return (
-    <main className={`flex-grow-1 ${!isHomePage ? 'pt-5 mt-5' : ''}`}>
+    <main className={`flex-grow-1 ${isHomePage ? 'home-main' : ''}`}>
       <TransitionGroup component={null}>
-        <CSSTransition key={location.key} classNames="page" timeout={400}>
-          <div className="page-container">
+        <CSSTransition
+          key={location.key}
+          classNames="page"
+          timeout={400}
+          nodeRef={nodeRef}
+        >
+          <div ref={nodeRef} className="page-container">
             <Routes location={location}>
               <Route path="/" element={<HomePage />} />
               <Route path="/courses" element={<CoursesPage />} />
@@ -91,7 +97,12 @@ function MainContent() {
 
 function App() {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <ScrollToTop />
       <div className="d-flex flex-column min-vh-100">
         <Header />

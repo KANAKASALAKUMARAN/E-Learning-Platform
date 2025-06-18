@@ -68,8 +68,27 @@ function SettingsPage() {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        
-        // Try to get user from API
+
+        // Check if this is a demo user first
+        const token = localStorage.getItem('token');
+        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+        if (token && token.startsWith('demo-token-')) {
+          // Use demo data from localStorage
+          setUser(storedUser);
+
+          // Populate settings from user data if available
+          if (storedUser.settings) {
+            if (storedUser.settings.account) setAccountSettings(storedUser.settings.account);
+            if (storedUser.settings.notifications) setNotificationSettings(storedUser.settings.notifications);
+            if (storedUser.settings.privacy) setPrivacySettings(storedUser.settings.privacy);
+            if (storedUser.settings.appearance) setAppearanceSettings(storedUser.settings.appearance);
+          }
+          setLoading(false);
+          return;
+        }
+
+        // Try to get user from API for real users
         const userData = await authService.getUserProfile();
         setUser(userData);
         

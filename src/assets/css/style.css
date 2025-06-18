@@ -1,10 +1,169 @@
-/* Main Styles for LearnHub E-Learning Platform */
+need /* Main Styles for LearnHub E-Learning Platform */
 
 /* Global Styles */
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: #333;
+}
+
+/* Global link reset to prevent any default browser styling */
+a, a:link, a:visited, a:hover, a:active, a:focus {
+  text-decoration: none !important;
+}
+
+/* Specific override for Bootstrap navbar links */
+.navbar a, .navbar a:link, .navbar a:visited, .navbar a:hover, .navbar a:active, .navbar a:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+}
+
+/* Only apply padding-top to non-React pages (legacy HTML pages) */
+body.legacy-page {
   padding-top: 75px;
+}
+
+/* React App specific styles */
+.d-flex.flex-column.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* Ensure main content has proper spacing from fixed navbar */
+main.flex-grow-1 {
+  padding-top: 80px; /* Space for fixed navbar */
+}
+
+/* Remove extra padding for home page */
+main.flex-grow-1:has(.home-page) {
+  padding-top: 0;
+}
+
+/* Alternative approach for home page - using CSS class */
+main.flex-grow-1.home-main {
+  padding-top: 0;
+}
+
+/* Enhanced navbar styling for route-based color changes */
+.navbar {
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar .nav-link {
+  transition: color 0.3s ease-in-out;
+  font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+  transform: translateY(-1px);
+}
+
+.navbar .nav-link.text-dark:hover {
+  color: #007bff !important;
+}
+
+.navbar .nav-link.text-white:hover {
+  color: #f8f9fa !important;
+}
+
+/* Smooth transitions for all navbar elements */
+.navbar .navbar-brand,
+.navbar .btn,
+.navbar .nav-link,
+.navbar .user-name {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Remove all default link styling and focus effects */
+.navbar .nav-link,
+.navbar .nav-link:link,
+.navbar .nav-link:visited,
+.navbar .nav-link:hover,
+.navbar .nav-link:active,
+.navbar .nav-link:focus {
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+  background: none !important;
+}
+
+/* Remove Bootstrap's default focus styles */
+.navbar .nav-link:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove any underline effects from child elements */
+.navbar .nav-link span,
+.navbar .nav-link::before,
+.navbar .nav-link::after {
+  border-bottom: none !important;
+  text-decoration: none !important;
+}
+
+/* Enhanced active state for navigation links - REMOVED UNDERLINE */
+.navbar .nav-link.active {
+  position: relative;
+  font-weight: bold;
+}
+
+/* Completely remove the blue underline effect */
+.navbar .nav-link.active::after,
+.navbar .nav-link::after {
+  display: none !important;
+}
+
+/* Additional browser-specific resets for navigation links */
+.navbar-nav .nav-link,
+.navbar-nav .nav-link:link,
+.navbar-nav .nav-link:visited,
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:active,
+.navbar-nav .nav-link:focus {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  border-bottom: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* Remove focus ring and any browser-specific focus styles */
+.navbar-nav .nav-link:focus-visible,
+.navbar-nav .nav-link:focus-within {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Remove any pseudo-element underlines */
+.navbar-nav .nav-link::before,
+.navbar-nav .nav-link::after,
+.navbar-nav .nav-link span::before,
+.navbar-nav .nav-link span::after {
+  content: none !important;
+  display: none !important;
+  border: none !important;
+  background: none !important;
+}
+
+/* Ensure React Router NavLink doesn't add default styles */
+.navbar-nav a[aria-current="page"],
+.navbar-nav a.active {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Cross-browser compatibility for removing underlines */
+.navbar-nav .nav-link {
+  -webkit-text-decoration: none !important;
+  -moz-text-decoration: none !important;
+  -ms-text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 /* Typography */

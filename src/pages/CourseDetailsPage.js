@@ -6,7 +6,6 @@ import {
   faStarHalfAlt,
   faClock,
   faSignal,
-  faChalkboardTeacher,
   faUsers,
   faCalendarAlt,
   faUser
@@ -21,7 +20,7 @@ function CourseDetailsPage() {
   const [error, setError] = useState(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollmentSuccess, setEnrollmentSuccess] = useState(false);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
+  const [user] = useState(JSON.parse(localStorage.getItem('currentUser')));
   const [isEnrolled, setIsEnrolled] = useState(false);
 
   useEffect(() => {

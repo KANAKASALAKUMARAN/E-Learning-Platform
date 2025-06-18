@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const userRoutes = require('./routes/userRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const quizRoutes = require('./routes/quizRoutes');
+const progressRoutes = require('./routes/progressRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 
 // Load environment variables
@@ -50,6 +52,8 @@ mongoose.connect(MONGODB_URI, mongoOptions)
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/quiz', quizRoutes);
+app.use('/api/progress', progressRoutes);
 
 // Default route
 app.get('/', (req, res) => {

@@ -87,8 +87,8 @@ function HomePage() {
     });
 
     return () => {
-      if (statsContainerRef.current) statsObserver.disconnect();
-      if (featuresRef.current) featuresObserver.disconnect();
+      statsObserver.disconnect();
+      featuresObserver.disconnect();
       revealObserver.disconnect();
     };
   }, []);

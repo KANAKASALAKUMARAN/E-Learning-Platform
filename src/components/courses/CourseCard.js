@@ -24,6 +24,7 @@ const CourseCard = ({ course, featured = false }) => {
   
   // Animation for card reveal
   useEffect(() => {
+    const currentCardRef = cardRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -33,14 +34,14 @@ const CourseCard = ({ course, featured = false }) => {
       },
       { threshold: 0.1 }
     );
-    
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
+
+    if (currentCardRef) {
+      observer.observe(currentCardRef);
     }
-    
+
     return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
+      if (currentCardRef) {
+        observer.unobserve(currentCardRef);
       }
     };
   }, []);

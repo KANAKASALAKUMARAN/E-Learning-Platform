@@ -195,6 +195,7 @@ function LoginPage() {
                       id="email"
                       name="email"
                       placeholder="name@example.com"
+                      autoComplete="email"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -217,6 +218,7 @@ function LoginPage() {
                       id="password"
                       name="password"
                       placeholder="Enter your password"
+                      autoComplete="current-password"
                       value={formData.password}
                       onChange={handleChange}
                     />

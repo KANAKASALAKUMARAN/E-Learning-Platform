@@ -160,6 +160,7 @@ function SignupPage() {
                       id="fullName"
                       name="fullName"
                       placeholder="Enter your full name"
+                      autoComplete="name"
                       value={formData.fullName}
                       onChange={handleChange}
                     />
@@ -179,6 +180,7 @@ function SignupPage() {
                       id="email"
                       name="email"
                       placeholder="name@example.com"
+                      autoComplete="email"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -198,6 +200,7 @@ function SignupPage() {
                       id="password"
                       name="password"
                       placeholder="Create a password"
+                      autoComplete="new-password"
                       value={formData.password}
                       onChange={handleChange}
                     />
@@ -218,6 +221,7 @@ function SignupPage() {
                       id="confirmPassword"
                       name="confirmPassword"
                       placeholder="Confirm your password"
+                      autoComplete="new-password"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                     />
