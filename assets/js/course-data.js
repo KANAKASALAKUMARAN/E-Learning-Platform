@@ -1,10 +1,9 @@
 // Sample course data
-const courseData = [
-    {
+const courseData = [    {
         id: 1,
         title: "Complete Web Development Bootcamp",
         description: "Learn HTML, CSS, JavaScript, React, Node and more to become a full-stack web developer",
-        image: "../assets/images/course-web-dev.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Web Development",
         badge: "Bestseller",
         rating: 4.9,
@@ -16,12 +15,11 @@ const courseData = [
         originalPrice: 199.99,
         level: "Beginner",
         link: "course-details.html?id=1"
-    },
-    {
+    },    {
         id: 2,
         title: "Python for Data Science and Machine Learning",
         description: "Master Python for data analysis, visualization, and machine learning algorithms",
-        image: "../assets/images/course-python.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Data Science",
         badge: "Hot & New",
         rating: 4.8,
@@ -33,12 +31,11 @@ const courseData = [
         originalPrice: 149.99,
         level: "Intermediate",
         link: "course-details.html?id=2"
-    },
-    {
+    },    {
         id: 3,
         title: "UI/UX Design Fundamentals",
         description: "Learn user interface and user experience design principles for digital products",
-        image: "../assets/images/course-design.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Design",
         badge: "",
         rating: 4.7,
@@ -50,12 +47,11 @@ const courseData = [
         originalPrice: 129.99,
         level: "Beginner",
         link: "course-details.html?id=3"
-    },
-    {
+    },    {
         id: 4,
         title: "Digital Marketing Masterclass",
         description: "Comprehensive guide to SEO, social media, email marketing and advertising",
-        image: "../assets/images/course-marketing.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Marketing",
         badge: "",
         rating: 4.6,
@@ -67,12 +63,11 @@ const courseData = [
         originalPrice: 159.99,
         level: "Beginner",
         link: "course-details.html?id=4"
-    },
-    {
+    },    {
         id: 5,
         title: "Advanced JavaScript Concepts",
         description: "Deep dive into advanced JavaScript topics including closures, prototypes, and async patterns",
-        image: "../assets/images/course-javascript.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Web Development",
         badge: "Advanced",
         rating: 4.9,
@@ -84,12 +79,11 @@ const courseData = [
         originalPrice: 179.99,
         level: "Advanced",
         link: "course-details.html?id=5"
-    },
-    {
+    },    {
         id: 6,
         title: "Business Analytics and Strategy",
         description: "Learn data-driven business decision making and strategic planning techniques",
-        image: "../assets/images/course-business.jpg",
+        image: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
         category: "Business",
         badge: "",
         rating: 4.7,

@@ -62,7 +62,7 @@ const CourseCard = ({ course, featured = false }) => {
       avatar: 'https://i.pravatar.cc/100?img=12',
       verified: true
     },
-    thumbnail: 'https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80',
+    thumbnail: 'https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png',
     rating: 4.8,
     ratingCount: 256,
     studentsEnrolled: 4295,

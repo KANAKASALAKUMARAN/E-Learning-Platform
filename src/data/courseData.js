@@ -10,6 +10,7 @@ const courseData = [
     reviews: 12542,
     instructor: "Jane Smith",
     instructorImage: "/assets/images/instructor-jane.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "42 hours",
     price: 49.99,
     originalPrice: 199.99,
@@ -17,8 +18,7 @@ const courseData = [
     lessons: 154,
     students: 325600,
     lastUpdated: "April 2025"
-  },
-  {
+  },  {
     id: 2,
     title: "Python for Data Science and Machine Learning",
     description: "Master Python for data analysis, visualization, and machine learning algorithms",
@@ -28,6 +28,7 @@ const courseData = [
     reviews: 8735,
     instructor: "Michael Johnson",
     instructorImage: "/assets/images/instructor-michael.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "38 hours",
     price: 59.99,
     originalPrice: 149.99,
@@ -35,8 +36,7 @@ const courseData = [
     lessons: 128,
     students: 187450,
     lastUpdated: "March 2025"
-  },
-  {
+  },  {
     id: 3,
     title: "UI/UX Design Fundamentals",
     description: "Learn user interface and user experience design principles for digital products",
@@ -46,6 +46,7 @@ const courseData = [
     reviews: 3214,
     instructor: "Sarah Williams",
     instructorImage: "/assets/images/instructor-sarah.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "24 hours",
     price: 39.99,
     originalPrice: 129.99,
@@ -53,8 +54,7 @@ const courseData = [
     lessons: 82,
     students: 94320,
     lastUpdated: "February 2025"
-  },
-  {
+  },  {
     id: 4,
     title: "Digital Marketing Masterclass",
     description: "Comprehensive guide to SEO, social media, email marketing and advertising",
@@ -64,6 +64,7 @@ const courseData = [
     reviews: 2875,
     instructor: "David Brown",
     instructorImage: "/assets/images/instructor-david.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "32 hours",
     price: 44.99,
     originalPrice: 159.99,
@@ -71,8 +72,7 @@ const courseData = [
     lessons: 96,
     students: 76500,
     lastUpdated: "January 2025"
-  },
-  {
+  },  {
     id: 5,
     title: "Advanced JavaScript Concepts",
     description: "Deep dive into advanced JavaScript topics including closures, prototypes, and async patterns",
@@ -82,6 +82,7 @@ const courseData = [
     reviews: 4328,
     instructor: "Robert Davis",
     instructorImage: "/assets/images/instructor-robert.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "28 hours",
     price: 54.99,
     originalPrice: 179.99,
@@ -89,8 +90,7 @@ const courseData = [
     lessons: 110,
     students: 115780,
     lastUpdated: "April 2025"
-  },
-  {
+  },  {
     id: 6,
     title: "Business Analytics and Strategy",
     description: "Learn data-driven business decision making and strategic planning techniques",
@@ -100,6 +100,7 @@ const courseData = [
     reviews: 2145,
     instructor: "Jennifer Wilson",
     instructorImage: "/assets/images/instructor-jennifer.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "26 hours",
     price: 49.99,
     originalPrice: 139.99,
@@ -107,8 +108,7 @@ const courseData = [
     lessons: 88,
     students: 67400,
     lastUpdated: "March 2025"
-  },
-  {
+  },  {
     id: 7,
     title: "Mobile App Development with React Native",
     description: "Build cross-platform mobile applications for iOS and Android using React Native",
@@ -118,6 +118,7 @@ const courseData = [
     reviews: 3286,
     instructor: "Thomas Lee",
     instructorImage: "/assets/images/instructor-thomas.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "34 hours",
     price: 54.99,
     originalPrice: 169.99,
@@ -125,8 +126,7 @@ const courseData = [
     lessons: 116,
     students: 83750,
     lastUpdated: "April 2025"
-  },
-  {
+  },  {
     id: 8,
     title: "Data Analysis with Excel and Power BI",
     description: "Master data analysis and visualization techniques using Excel and Power BI",
@@ -136,6 +136,7 @@ const courseData = [
     reviews: 1876,
     instructor: "Laura Martinez",
     instructorImage: "/assets/images/instructor-laura.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "22 hours",
     price: 34.99,
     originalPrice: 119.99,
@@ -143,8 +144,7 @@ const courseData = [
     lessons: 76,
     students: 54320,
     lastUpdated: "February 2025"
-  },
-  {
+  },  {
     id: 9,
     title: "Graphic Design Masterclass",
     description: "Learn creative design principles using Adobe Photoshop, Illustrator, and InDesign",
@@ -154,6 +154,7 @@ const courseData = [
     reviews: 2438,
     instructor: "Chris Anderson",
     instructorImage: "/assets/images/instructor-chris.jpg",
+    thumbnail: "https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png",
     duration: "36 hours",
     price: 49.99,
     originalPrice: 149.99,

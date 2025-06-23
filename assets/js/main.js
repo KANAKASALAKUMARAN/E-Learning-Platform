@@ -602,7 +602,7 @@ function initMockData() {
             price: 49.99,
             rating: 4.8,
             reviewCount: 240,
-            image: 'course1.jpg',
+            image: 'https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png',
             isBestseller: true,
             isNew: false,
             lessons: [
@@ -623,7 +623,7 @@ function initMockData() {
             price: 59.99,
             rating: 4.9,
             reviewCount: 315,
-            image: 'course2.jpg',
+            image: 'https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png',
             isBestseller: false,
             isNew: true,
             lessons: [
@@ -644,7 +644,7 @@ function initMockData() {
             price: 39.99,
             rating: 4.7,
             reviewCount: 189,
-            image: 'course3.jpg',
+            image: 'https://streamline-learning.com/wp-content/uploads/2024/10/online-courses-1024x537.png',
             isBestseller: false,
             isNew: false,
             lessons: [
